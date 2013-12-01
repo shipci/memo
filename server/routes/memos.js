@@ -1,33 +1,30 @@
 var MEMO_FILE = './memos/memo0.md';
 
 var fs = require('fs');
-var read = fs.createReadStream(MEMO_FILE);
 
 var io = require('socket.io').listen(9001);
 io.sockets.on('connection', function (socket) {
-  read.on('data', function (data) {
-    startWatching(MEMO_FILE);
+  startWatching(MEMO_FILE);
+  sendMemo();
 
-    var content = data.toString();
-    sendMemo(content);
+  function startWatching (fileName) {
+    var watcher = fs.watch(fileName, {persistent: false}, function (event, name) {
+      console.log(fileName);
 
-    function startWatching (fileName) {
-      var watcher = fs.watch(fileName, {persistent: true}, function (event, filename) {
-        content = fs.readFileSync(MEMO_FILE).toString();
-        sendMemo(content);
+      sendMemo();
 
-        watcher.close();
-        startWatching(fileName);
-      });
-    }
+      watcher.close();
+      startWatching(fileName);
+    });
+  }
 
-    function sendMemo (content) {
-      socket.emit('memo', {
-        title: 'Title',
-        content: content
-      });
-    }
-  });
+  function sendMemo () {
+    var content = fs.readFileSync(MEMO_FILE).toString();
+    socket.emit('memo', {
+      title: 'Title',
+      content: content
+    });
+  }
 });
 
 exports.list = function(req, res){
