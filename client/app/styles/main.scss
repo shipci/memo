@@ -85,3 +85,18 @@ body {
         border-bottom: 0;
     }
 }
+
+.logo {
+  float: left;
+  margin-right: 10px;
+  font-size: 1.7em;
+  color: #555;
+  letter-spacing: -1px;
+  padding-top: 9px;
+  font-weight: bold;
+  line-height: 1;
+
+  sup {
+    font-size: 60%;
+  }
+}
