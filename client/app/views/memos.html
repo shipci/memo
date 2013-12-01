@@ -2,4 +2,4 @@
     {{ memo.title }}
 </h1>
 
-{{ memo.content }}
+<span ng-bind-html="memo.content | markdown"></span>

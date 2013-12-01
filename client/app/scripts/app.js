@@ -4,7 +4,8 @@ angular.module('memoApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
-  'ngRoute'
+  'ngRoute',
+  'memoFilters'
 ])
   .config(function ($routeProvider) {
     $routeProvider
