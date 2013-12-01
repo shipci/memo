@@ -4,8 +4,7 @@
 
 angular.module('memoFilters', [])
   .filter('markdown', function () {
-    // var converter = new Showdown.converter({ extensions: ['github'] });
-    var converter = new Showdown.converter();
+    var converter = new Showdown.converter({ extensions: ['github'] });
     return function (input) {
       if (!input) {
         return null;
