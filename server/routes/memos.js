@@ -19,10 +19,11 @@ io.sockets.on('connection', function (socket) {
   }
 
   function sendMemo () {
-    var content = fs.readFileSync(MEMO_FILE).toString();
-    socket.emit('memo', {
-      title: 'Title',
-      content: content
+    fs.readFile(MEMO_FILE, function (err, data) {
+      socket.emit('memo', {
+        title: 'Title',
+        content: data.toString()
+      });
     });
   }
 });
