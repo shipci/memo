@@ -1,9 +1,16 @@
 
+var fs = require('fs');
+var read = fs.createReadStream('./memos/memo0.md');
+
 var io = require('socket.io').listen(9001);
 io.sockets.on('connection', function (socket) {
-  socket.emit('memo', {
-    title: 'Title',
-    content: 'Content'
+  read.on('data', function (data) {
+    var content = data.toString();
+
+    socket.emit('memo', {
+      title: 'Title',
+      content: content
+    });
   });
 });
 
