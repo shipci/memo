@@ -15,3 +15,6 @@ Chapter 2
 * bar
   * baz
   * zzz
+
+* [W3C](http://www.w3.org/)
+* ![image](http://w3.org/Icons/valid-xhtml10)
