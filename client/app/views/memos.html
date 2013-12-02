@@ -1,2 +1,6 @@
-<span ng-bind-html="memo.content | markdown"></span>
-<br>
+
+<ul>
+  <li ng-repeat="memo in memos">
+    <a ng-href="#/{{memo}}">{{ memo }}</a>
+  </li>
+</ul>
