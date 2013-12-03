@@ -30,10 +30,9 @@ io.sockets.on('connection', function (socket) {
 });
 
 var memos = getMemos(MEMO_DIR);
-console.log(memos);
+// console.log(memos);
 
 exports.list = function(req, res){
-  // res.send("respond with a resource");
   res.send(memos);
 };
 
@@ -46,9 +45,7 @@ function getMemos (dir) {
     var file = files[i];
     var stat = fs.statSync(dir + file);
     if (stat.isFile()) {
-      result.push(dir + file);
-    } else if (stat.isDirectory()) {
-      result = result.concat(getMemos(dir + file + '/'));
+      result.push(file);
     }
   }
 
