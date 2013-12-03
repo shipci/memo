@@ -1,15 +1,14 @@
 'use strict';
 
 angular.module('memoApp')
-  .controller('MemoCtrl', function ($scope, $routeParams) {
+  .controller('MemoCtrl', function ($scope, $routeParams, memoService) {
     var id = $routeParams.id;
     // console.log(id);
     $scope.memo = null;
 
-    var socket = io.connect('http://localhost:9001');
-    socket.on('memo', function (data) {
-      // console.log(data);
-      $scope.memo = data;
+    memoService.getMemo(id, function (memo) {
+      // console.log(memo);
+      $scope.memo = memo;
       $scope.$apply();
     });
   });
