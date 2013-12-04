@@ -5,13 +5,17 @@ var fs = require('fs');
 
 var io = require('socket.io').listen(9001);
 io.sockets.on('connection', function (socket) {
-  startWatching(MEMO_FILE);
-  sendMemo();
+  socket.on('watch', function (id) {
+    // console.log('Watching ' + id);
+    socket.set('id', id, function () {
+      startWatching(MEMO_DIR + id);
+      sendMemo();
+    });
+  });
 
   function startWatching (fileName) {
     var watcher = fs.watch(fileName, {persistent: false}, function (event, name) {
-      console.log(fileName);
-
+      // console.log(fileName);
       sendMemo();
 
       watcher.close();
@@ -20,10 +24,13 @@ io.sockets.on('connection', function (socket) {
   }
 
   function sendMemo () {
-    fs.readFile(MEMO_FILE, function (err, data) {
-      socket.emit('memo', {
-        title: 'Title',
-        content: data.toString()
+    socket.get('id', function (err, id) {
+      // console.log('Loading ' + id);
+      fs.readFile(MEMO_DIR + id, function (err, data) {
+        socket.emit('memo', {
+          title: 'Title',
+          content: data.toString()
+        });
       });
     });
   }
