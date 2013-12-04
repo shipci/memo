@@ -1,5 +1,6 @@
+'use strict';
+
 var MEMO_DIR = './memos/';
-var MEMO_FILE = './memos/memo0.md';
 
 var fs = require('fs');
 
@@ -14,7 +15,7 @@ io.sockets.on('connection', function (socket) {
   });
 
   function startWatching (fileName) {
-    var watcher = fs.watch(fileName, {persistent: false}, function (event, name) {
+    var watcher = fs.watch(fileName, {persistent: false}, function () {
       // console.log(fileName);
       sendMemo();
 
@@ -36,13 +37,6 @@ io.sockets.on('connection', function (socket) {
   }
 });
 
-var memos = getMemos(MEMO_DIR);
-// console.log(memos);
-
-exports.list = function(req, res){
-  res.send(memos);
-};
-
 function getMemos (dir) {
   var result = [];
 
@@ -58,3 +52,11 @@ function getMemos (dir) {
 
   return result;
 }
+
+var memos = getMemos(MEMO_DIR);
+// console.log(memos);
+
+exports.list = function(req, res){
+  res.send(memos);
+};
+
