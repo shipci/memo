@@ -1,41 +1,9 @@
 'use strict';
 
-var MEMO_DIR = './memos/';
-
 var fs = require('fs');
 
-var io = require('socket.io').listen(9001);
-io.sockets.on('connection', function (socket) {
-  socket.on('watch', function (id) {
-    // console.log('Watching ' + id);
-    socket.set('id', id, function () {
-      startWatching(MEMO_DIR + id);
-      sendMemo();
-    });
-  });
-
-  function startWatching (fileName) {
-    var watcher = fs.watch(fileName, {persistent: false}, function () {
-      // console.log(fileName);
-      sendMemo();
-
-      watcher.close();
-      startWatching(fileName);
-    });
-  }
-
-  function sendMemo () {
-    socket.get('id', function (err, id) {
-      // console.log('Loading ' + id);
-      fs.readFile(MEMO_DIR + id, function (err, data) {
-        socket.emit('memo', {
-          title: 'Title',
-          content: data.toString()
-        });
-      });
-    });
-  }
-});
+var MEMO_DIR = './memos/';
+var memos = null;
 
 function getMemos (dir) {
   var result = [];
@@ -53,10 +21,47 @@ function getMemos (dir) {
   return result;
 }
 
-var memos = getMemos(MEMO_DIR);
-// console.log(memos);
+function initialize () {
+  memos = getMemos(MEMO_DIR);
+  // console.log(memos);
+}
+
+initialize();
+
+exports.start = function (io) {
+  io.sockets.on('connection', function (socket) {
+    socket.on('watch', function (id) {
+      // console.log('Watching ' + id);
+      socket.set('id', id, function () {
+        startWatching(MEMO_DIR + id);
+        sendMemo();
+      });
+    });
+
+    function startWatching (fileName) {
+      var watcher = fs.watch(fileName, {persistent: false}, function () {
+        // console.log(fileName);
+        sendMemo();
+
+        watcher.close();
+        startWatching(fileName);
+      });
+    }
+
+    function sendMemo () {
+      socket.get('id', function (err, id) {
+        // console.log('Loading ' + id);
+        fs.readFile(MEMO_DIR + id, function (err, data) {
+          socket.emit('memo', {
+            title: 'Title',
+            content: data.toString()
+          });
+        });
+      });
+    }
+  });
+};
 
 exports.list = function(req, res){
   res.send(memos);
 };
-

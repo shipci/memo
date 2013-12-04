@@ -32,6 +32,10 @@ if ('development' === app.get('env')) {
 app.get('/', routes.index);
 app.get('/memos', memos.list);
 
-http.createServer(app).listen(app.get('port'), function(){
+var server = http.createServer(app);
+server.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+var io = require('socket.io').listen(server);
+memos.start(io);

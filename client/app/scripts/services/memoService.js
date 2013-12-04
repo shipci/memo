@@ -4,7 +4,7 @@
 
 angular.module('memoApp')
   .service('memoService', function memoService() {
-    this.socket = io.connect('http://localhost:9001');
+    this.socket = io.connect('http://localhost');
 
     this.watchMemo = function (id) {
       this.socket.emit('watch', id);
