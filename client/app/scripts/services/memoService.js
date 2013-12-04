@@ -1,3 +1,5 @@
+/* global io */
+
 'use strict';
 
 angular.module('memoApp')
