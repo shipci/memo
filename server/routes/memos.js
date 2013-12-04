@@ -30,6 +30,8 @@ initialize();
 
 exports.start = function (io) {
   io.sockets.on('connection', function (socket) {
+    var watcher = null;
+
     socket.on('watch', function (id) {
       // console.log('Watching ' + id);
       socket.set('id', id, function () {
@@ -38,17 +40,30 @@ exports.start = function (io) {
       });
     });
 
+    socket.on('disconnect', function () {
+      // console.log('Disconnected');
+      stopWatching();
+    });
+
     function startWatching (fileName) {
-      var watcher = fs.watch(fileName, {persistent: false}, function () {
-        // console.log(fileName);
+      watcher = fs.watch(fileName, {persistent: false}, function () {
+        // console.log('Detected: ' + fileName);
         sendMemo();
 
-        watcher.close();
+        stopWatching();
         startWatching(fileName);
       });
     }
 
+    function stopWatching () {
+      if (watcher) {
+        watcher.close();
+      }
+      watcher = null;
+    }
+
     function sendMemo () {
+      // console.log('Sending');
       socket.get('id', function (err, id) {
         // console.log('Loading ' + id);
         fs.readFile(MEMO_DIR + id, function (err, data) {
