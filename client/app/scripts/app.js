@@ -9,7 +9,7 @@ angular.module('memoApp', [
 ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/memos/:id', {
+      .when('/memos/:id*', {
         templateUrl: 'views/memo.html',
         controller: 'MemoCtrl'
       })

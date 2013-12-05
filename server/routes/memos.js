@@ -3,18 +3,24 @@
 var fs = require('fs');
 
 var MEMO_DIR = './memos/';
+var MEMO_DIR_FOR_PRIVATE = 'private/';
 var memos = null;
 
 function getMemos (dir) {
   var result = [];
 
-  var files = fs.readdirSync(dir);
-  var length = files.length;
+  dir = dir || '';
+
+  var fileNames = fs.readdirSync(MEMO_DIR + dir);
+  var length = fileNames.length;
   for (var i = 0; i < length; i++) {
-    var file = files[i];
-    var stat = fs.statSync(dir + file);
-    if (stat.isFile()) {
-      result.push(file);
+    var fileName = fileNames[i];
+    // Check if the file is not a hidden file
+    if (fileName.charAt(0) !== '.') {
+      var stat = fs.statSync(MEMO_DIR + dir + fileName);
+      if (stat.isFile()) {
+        result.push(dir + fileName);
+      }
     }
   }
 
@@ -22,7 +28,8 @@ function getMemos (dir) {
 }
 
 function initialize () {
-  memos = getMemos(MEMO_DIR);
+  memos = getMemos();
+  memos = memos.concat(getMemos(MEMO_DIR_FOR_PRIVATE));
   // console.log(memos);
 }
 
