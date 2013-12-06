@@ -17,6 +17,10 @@ angular.module('memoApp', [
         templateUrl: 'views/memos.html',
         controller: 'MemosCtrl'
       })
+      .when('/about', {
+        templateUrl: 'views/about.html',
+        controller: 'AboutCtrl'
+      })
       .when('/', {
         templateUrl: 'views/main.html',
         controller: 'MainCtrl'
