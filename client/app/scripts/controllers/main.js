@@ -2,9 +2,6 @@
 
 angular.module('memoApp')
   .controller('MainCtrl', function ($scope) {
-    $scope.awesomeThings = [
-      'HTML5 Boilerplate',
-      'AngularJS',
-      'Karma'
-    ];
+    $('.nav li').removeClass('active');
+    $('#nav-home').addClass('active');
   });
