@@ -1,7 +1,11 @@
 {
   "name": "memo",
-  "version": "0.0.0",
-  "dependencies": {},
+  "version": "0.0.1",
+  "dependencies": {
+    "express": "~3.4.6",
+    "jade": "*",
+    "socket.io": "~0.9.16"
+  },
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-autoprefixer": "~0.4.0",
@@ -45,6 +49,7 @@
     "node": ">=0.8.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "start": "NODE_ENV=production node server/app.js",
+    "test": "NODE_ENV=development node-dev server/app.js"
   }
 }

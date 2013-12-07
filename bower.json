@@ -1,6 +1,8 @@
 {
   "name": "memo",
   "version": "0.0.0",
+  "appPath": "client/app",
+  "distPath": "client/dist",
   "dependencies": {
     "angular": "~1.2.0",
     "json3": "~3.2.4",
