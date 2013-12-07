@@ -1,6 +1,11 @@
-<a ng-href="#/memos/{{id}}/edit" class="btn btn-primary btn-lg pull-right">
-  Edit
-</a>
+<div class="row col-lg-12">
+  <div class="pull-right">
+    <a ng-href="#/memos/{{id}}/edit" class="btn btn-primary">
+      Edit
+    </a>
+  </div>
+</div>
 
-<span ng-bind-html="memo.content | markdown"></span>
-<br>
+<div class="row col-lg-12">
+  <span ng-bind-html="memo.content | markdown"></span>
+</div>
