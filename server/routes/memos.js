@@ -47,6 +47,17 @@ exports.start = function (io) {
       });
     });
 
+    socket.on('save', function (data) {
+      // console.log('Saving');
+      // console.log(data.id);
+      // console.log(data.memo);
+
+      fs.writeFile(MEMO_DIR + data.id, data.memo.content, function (err) {
+        if (err) throw err;
+        // console.log('Saved');
+      });
+    });
+
     socket.on('disconnect', function () {
       // console.log('Disconnected');
       stopWatching();

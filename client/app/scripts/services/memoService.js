@@ -17,4 +17,11 @@ angular.module('memoApp')
         }
       });
     };
+
+    this.saveMemo = function (id, memo) {
+      this.socket.emit('save', {
+        id: id,
+        memo: memo
+      });
+    };
   });

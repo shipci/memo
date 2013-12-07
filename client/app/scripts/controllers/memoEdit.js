@@ -21,5 +21,10 @@ angular.module('memoApp')
       $scope.memo = memo;
       $scope.$apply();
     });
+
+    $('#save').click(function () {
+      // console.log('Save');
+      memoService.saveMemo($scope.id, $scope.memo);
+    });
   });
 
