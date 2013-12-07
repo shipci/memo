@@ -14,9 +14,9 @@ angular.module('memoApp')
     // console.log($scope.id);
     $scope.memo = null;
 
-    memoService.watchMemo($scope.id);
+    memoService.watch($scope.id);
 
-    memoService.getMemo($scope.id, function (memo) {
+    memoService.load($scope.id, function (memo) {
       // console.log(memo);
       $scope.memo = memo;
       $scope.$apply();
@@ -24,7 +24,7 @@ angular.module('memoApp')
 
     $('#save').click(function () {
       // console.log('Save');
-      memoService.saveMemo($scope.id, $scope.memo);
+      memoService.save($scope.id, $scope.memo);
     });
   });
 

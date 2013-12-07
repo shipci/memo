@@ -9,9 +9,9 @@ angular.module('memoApp')
     // console.log(id);
     $scope.memo = null;
 
-    memoService.watchMemo($scope.id);
+    memoService.watch($scope.id);
 
-    memoService.getMemo($scope.id, function (memo) {
+    memoService.load($scope.id, function (memo) {
       // console.log(memo);
       $scope.memo = memo;
       $scope.$apply();
