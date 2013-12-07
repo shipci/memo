@@ -1,20 +1,24 @@
-<div class="row col-lg-12">
-  <div class="pull-right">
-    <a ng-href="#/memos/{{id}}" class="btn btn-primary">
-      Save
-    </a>
-    <a ng-href="#/memos/{{id}}" class="btn btn-default">
-      Cancel
-    </a>
+<div class="row buttons">
+  <div class="col-lg-12">
+    <div class="pull-right">
+      <a ng-href="#/memos/{{id}}" class="btn btn-primary">
+        Save
+      </a>
+      <a ng-href="#/memos/{{id}}" class="btn btn-default">
+        Cancel
+      </a>
+    </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-lg-6">
-    <textarea class="form-control" rows="20" ng-model="memo.content"></textarea>
+    <textarea id="md_area" class="form-control" ng-model="memo.content" autofocus></textarea>
   </div>
 
   <div class="col-lg-6">
-    <span ng-bind-html="memo.content | markdown"></span>
+    <div id="html_area" class="form-control">
+      <span ng-bind-html="memo.content | markdown"></span>
+    </div>
   </div>
 </div>
