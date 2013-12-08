@@ -5,9 +5,20 @@
 </div>
 <br>
 
-<ul>
+<ul class="memos-dir">
   <li ng-repeat="memo in memos">
-    <a ng-show="memo.dirName" ng-href="#/{{dir}}/{{memo.dirName}}">{{memo.dirName}}</a>
-    <a ng-hide="memo.dirName" ng-href="#/{{dir}}/{{memo}}">{{memo}}</a>
+    <div ng-show="memo.dirName">
+      <span class="glyphicon glyphicon-folder-close"></span>
+      <a ng-href="#/{{dir}}/{{memo.dirName}}">
+        {{memo.dirName}}/
+      </a>
+    </div>
+
+    <div ng-hide="memo.dirName">
+      <span class="glyphicon glyphicon-file"></span>
+      <a ng-href="#/{{dir}}/{{memo}}">
+        {{memo}}
+      </a>
+    </div>
   </li>
 </ul>
