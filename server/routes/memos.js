@@ -40,15 +40,45 @@ function initialize () {
 
 initialize();
 
+var watcher = null;
+
+function startWatching (socket, fileName) {
+  watcher = fs.watch(fileName, {persistent: false}, function () {
+    // console.log('Detected: ' + fileName);
+    sendMemo(socket);
+
+    stopWatching();
+    startWatching(fileName);
+  });
+}
+
+function stopWatching () {
+  if (watcher) {
+    watcher.close();
+  }
+  watcher = null;
+}
+
+function sendMemo (socket) {
+  // console.log('Sending');
+  socket.get('id', function (err, id) {
+    // console.log('Loading ' + id);
+    fs.readFile(MEMO_DIR + id, function (err, data) {
+      socket.emit('memo', {
+        title: 'Title',
+        content: data.toString()
+      });
+    });
+  });
+}
+
 exports.start = function (io) {
   io.sockets.on('connection', function (socket) {
-    var watcher = null;
-
     socket.on('watch', function (id) {
       // console.log('Watching ' + id);
       socket.set('id', id, function () {
-        startWatching(MEMO_DIR + id);
-        sendMemo();
+        startWatching(socket, MEMO_DIR + id);
+        sendMemo(socket);
       });
     });
 
@@ -69,36 +99,6 @@ exports.start = function (io) {
       // console.log('Disconnected');
       stopWatching();
     });
-
-    function startWatching (fileName) {
-      watcher = fs.watch(fileName, {persistent: false}, function () {
-        // console.log('Detected: ' + fileName);
-        sendMemo();
-
-        stopWatching();
-        startWatching(fileName);
-      });
-    }
-
-    function stopWatching () {
-      if (watcher) {
-        watcher.close();
-      }
-      watcher = null;
-    }
-
-    function sendMemo () {
-      // console.log('Sending');
-      socket.get('id', function (err, id) {
-        // console.log('Loading ' + id);
-        fs.readFile(MEMO_DIR + id, function (err, data) {
-          socket.emit('memo', {
-            title: 'Title',
-            content: data.toString()
-          });
-        });
-      });
-    }
   });
 };
 
