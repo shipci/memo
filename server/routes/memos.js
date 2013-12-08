@@ -48,7 +48,7 @@ function startWatching (socket, fileName) {
     sendMemo(socket);
 
     stopWatching();
-    startWatching(fileName);
+    startWatching(socket, fileName);
   });
 }
 
