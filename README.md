@@ -6,3 +6,19 @@
 [![Coverage Status](https://coveralls.io/repos/eqot/memo/badge.png)](https://coveralls.io/r/eqot/memo)
 
 This allows ....
+
+
+## How to use
+
+```
+git clone https://github.com/eqot/memo.git
+npm install
+bower install
+grunt build
+npm start
+```
+
+
+## License
+
+Copyright 2013 Ikuo Terado. Released under a [MIT license](http://www.opensource.org/licenses/mit-license.php).
