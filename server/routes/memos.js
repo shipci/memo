@@ -7,7 +7,8 @@ var MEMO_DIR_FOR_PRIVATE = 'private/';
 var memos = null;
 
 function getMemos (dir) {
-  var result = [];
+  var files = [];
+  var dirs = [];
 
   dir = dir || '';
 
@@ -19,18 +20,18 @@ function getMemos (dir) {
     if (fileName.charAt(0) !== '.') {
       var stat = fs.statSync(MEMO_DIR + dir + fileName);
       if (stat.isFile()) {
-        result.push(/* dir + */ fileName);
+        files.push(/* dir + */ fileName);
       } else if (stat.isDirectory()) {
         var subDir = {
           dirName: /* dir + */ fileName
           // children: getMemos(dir + fileName + '/')
         };
-        result.push(subDir);
+        dirs.push(subDir);
       }
     }
   }
 
-  return result;
+  return dirs.concat(files);
 }
 
 function initialize () {
