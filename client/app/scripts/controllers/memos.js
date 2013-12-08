@@ -17,7 +17,7 @@ angular.module('memoApp')
     for (var i = 0; i < length; i++) {
       var dir = {
         name: dirs[i]
-      }
+      };
       if (i !== length - 1) {
         dir.link = fullDir + dirs[i];
       }

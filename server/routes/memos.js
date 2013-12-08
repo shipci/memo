@@ -3,7 +3,6 @@
 var fs = require('fs');
 
 var MEMO_DIR = './memos/';
-var MEMO_DIR_FOR_PRIVATE = 'private/';
 var memos = null;
 
 function getMemos (dir) {
@@ -36,7 +35,6 @@ function getMemos (dir) {
 
 function initialize () {
   memos = getMemos();
-  // memos = memos.concat(getMemos(MEMO_DIR_FOR_PRIVATE));
   // console.log(memos);
 }
 
@@ -60,7 +58,9 @@ exports.start = function (io) {
       // console.log(data.memo);
 
       fs.writeFile(MEMO_DIR + data.id, data.memo.content, function (err) {
-        if (err) throw err;
+        if (err) {
+          throw err;
+        }
         // console.log('Saved');
       });
     });
