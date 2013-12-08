@@ -1,9 +1,8 @@
 <br>
 
-<div>
-  {{dir}}
-</div>
-<br>
+<ol class="breadcrumb">
+  <li ng-repeat="d in dirSplit"><a ng-show="d.link" ng-href="#/{{d.link}}">{{d.name}}</a><span ng-hide="d.link">{{d.name}}</span></li>
+</ol>
 
 <ul class="memos-dir">
   <li ng-repeat="memo in memos">
