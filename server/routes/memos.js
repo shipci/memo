@@ -19,7 +19,13 @@ function getMemos (dir) {
     if (fileName.charAt(0) !== '.') {
       var stat = fs.statSync(MEMO_DIR + dir + fileName);
       if (stat.isFile()) {
-        result.push(dir + fileName);
+        result.push(/* dir + */ fileName);
+      } else if (stat.isDirectory()) {
+        var subDir = {
+          dirName: /* dir + */ fileName
+          // children: getMemos(dir + fileName + '/')
+        };
+        result.push(subDir);
       }
     }
   }
@@ -29,7 +35,7 @@ function getMemos (dir) {
 
 function initialize () {
   memos = getMemos();
-  memos = memos.concat(getMemos(MEMO_DIR_FOR_PRIVATE));
+  // memos = memos.concat(getMemos(MEMO_DIR_FOR_PRIVATE));
   // console.log(memos);
 }
 
@@ -95,6 +101,9 @@ exports.start = function (io) {
   });
 };
 
-exports.list = function(req, res){
-  res.send(memos);
+exports.list = function(req, res) {
+  var dir = req.params + '/';
+  // console.log(dir);
+
+  res.send(getMemos(dir));
 };

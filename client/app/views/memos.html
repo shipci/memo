@@ -1,7 +1,13 @@
 <br>
 
+<div>
+  {{dir}}
+</div>
+<br>
+
 <ul>
   <li ng-repeat="memo in memos">
-    <a ng-href="#/memos/{{memo}}">{{memo}}</a>
+    <a ng-show="memo.dirName" ng-href="#/{{dir}}/{{memo.dirName}}">{{memo.dirName}}</a>
+    <a ng-hide="memo.dirName" ng-href="#/{{dir}}/{{memo}}">{{memo}}</a>
   </li>
 </ul>

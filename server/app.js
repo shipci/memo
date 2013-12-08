@@ -30,6 +30,7 @@ if ('development' === app.get('env')) {
 }
 
 app.get('/', routes.index);
+app.get('/memos/*', memos.list);
 app.get('/memos', memos.list);
 
 var server = http.createServer(app);

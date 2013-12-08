@@ -10,7 +10,7 @@ angular.module('memoApp')
     $('#md_area').height(height);
     $('#html_area').height(height);
 
-    $scope.id = $routeParams.id;
+    $scope.id = $routeParams.id + '.md';
     // console.log($scope.id);
     $scope.memo = null;
 

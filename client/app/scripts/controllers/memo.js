@@ -5,8 +5,8 @@ angular.module('memoApp')
     $('.nav li').removeClass('active');
     $('#nav-memos').addClass('active');
 
-    $scope.id = $routeParams.id;
-    // console.log(id);
+    $scope.id = $routeParams.id + '.md';
+    // console.log($scope.id);
     $scope.memo = null;
 
     memoService.watch($scope.id);
