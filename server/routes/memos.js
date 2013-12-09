@@ -35,17 +35,21 @@ function getMemos (dir) {
 var watcher = null;
 
 function startWatching (socket, fileName) {
-  watcher = fs.watch(fileName, {persistent: false}, function () {
+  stopWatching();
+
+  // console.log('Watching: ' + fileName);
+  watcher = fs.watch(fileName, {persistent: true}, function () {
     // console.log('Detected: ' + fileName);
     sendMemo(socket);
 
-    stopWatching();
     startWatching(socket, fileName);
   });
+  // console.log(watcher);
 }
 
 function stopWatching () {
   if (watcher) {
+    // console.log('Unwatched: ');
     watcher.close();
   }
   watcher = null;
@@ -66,6 +70,7 @@ function sendMemo (socket) {
 
 exports.start = function (io) {
   io.sockets.on('connection', function (socket) {
+    // console.log('Connected');
     socket.on('watch', function (id) {
       // console.log('Watching ' + id);
       socket.set('id', id, function () {
