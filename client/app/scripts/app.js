@@ -9,11 +9,11 @@ angular.module('memoApp', [
 ])
   .config(function ($routeProvider) {
     $routeProvider
-      .when('/memos/:id*.md/edit', {
+      .when('/memos/:file*.md/edit', {
         templateUrl: 'views/memoEdit.html',
         controller: 'MemoEditCtrl'
       })
-      .when('/memos/:id*.md', {
+      .when('/memos/:file*.md', {
         templateUrl: 'views/memo.html',
         controller: 'MemoCtrl'
       })

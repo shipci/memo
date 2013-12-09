@@ -7,13 +7,13 @@ angular.module('memoApp')
     $('.nav li').removeClass('active');
     $('#nav-memos').addClass('active');
 
-    $scope.id = $routeParams.id + '.md';
-    // console.log($scope.id);
+    $scope.file = $routeParams.file + '.md';
+    // console.log($scope.file);
     $scope.memo = null;
 
-    memoService.watch($scope.id);
+    memoService.watch($scope.file);
 
-    memoService.load($scope.id, function (memo) {
+    memoService.load($scope.file, function (memo) {
       // console.log(memo);
       $scope.memo = memo;
       $scope.$apply();

@@ -6,11 +6,11 @@ angular.module('memoApp')
   .service('memoService', function memoService() {
     this.socket = io.connect('http://localhost');
 
-    this.watch = function (id) {
-      this.socket.emit('watch', id);
+    this.watch = function (file) {
+      this.socket.emit('watch', file);
     };
 
-    this.load = function (id, callback) {
+    this.load = function (file, callback) {
       this.socket.on('memo', function (data) {
         if (callback) {
           callback(data);
@@ -18,9 +18,9 @@ angular.module('memoApp')
       });
     };
 
-    this.save = function (id, memo) {
+    this.save = function (file, memo) {
       this.socket.emit('save', {
-        id: id,
+        file: file,
         memo: memo
       });
     };

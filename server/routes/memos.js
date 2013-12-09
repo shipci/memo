@@ -57,9 +57,9 @@ function stopWatching () {
 
 function sendMemo (socket) {
   // console.log('Sending');
-  socket.get('id', function (err, id) {
-    // console.log('Loading ' + id);
-    fs.readFile(MEMO_DIR + id, function (err, data) {
+  socket.get('file', function (err, file) {
+    // console.log('Loading ' + file);
+    fs.readFile(MEMO_DIR + file, function (err, data) {
       socket.emit('memo', {
         title: 'Title',
         content: data.toString()
@@ -71,20 +71,20 @@ function sendMemo (socket) {
 exports.start = function (io) {
   io.sockets.on('connection', function (socket) {
     // console.log('Connected');
-    socket.on('watch', function (id) {
-      // console.log('Watching ' + id);
-      socket.set('id', id, function () {
-        startWatching(socket, MEMO_DIR + id);
+    socket.on('watch', function (file) {
+      // console.log('Watching ' + file);
+      socket.set('file', file, function () {
+        startWatching(socket, MEMO_DIR + file);
         sendMemo(socket);
       });
     });
 
     socket.on('save', function (data) {
       // console.log('Saving');
-      // console.log(data.id);
+      // console.log(data.file);
       // console.log(data.memo);
 
-      fs.writeFile(MEMO_DIR + data.id, data.memo.content, function (err) {
+      fs.writeFile(MEMO_DIR + data.file, data.memo.content, function (err) {
         if (err) {
           throw err;
         }
