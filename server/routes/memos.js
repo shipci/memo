@@ -3,7 +3,6 @@
 var fs = require('fs');
 
 var MEMO_DIR = './memos/';
-var memos = null;
 
 function getMemos (dir) {
   var files = [];
@@ -32,13 +31,6 @@ function getMemos (dir) {
 
   return dirs.concat(files);
 }
-
-function initialize () {
-  memos = getMemos();
-  // console.log(memos);
-}
-
-initialize();
 
 var watcher = null;
 
