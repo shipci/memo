@@ -12,13 +12,13 @@ angular.module('memoApp')
     $('#md_area').height(height);
     $('#html_area').height(height);
 
-    $scope.id = $routeParams.id + '.md';
-    // console.log($scope.id);
+    $scope.file = $routeParams.file + '.md';
+    // console.log($scope.file);
     $scope.memo = null;
 
-    memoService.watch($scope.id);
+    memoService.watch($scope.file);
 
-    memoService.load($scope.id, function (memo) {
+    memoService.load($scope.file, function (memo) {
       // console.log(memo);
       $scope.memo = memo;
       $scope.$apply();
@@ -26,7 +26,7 @@ angular.module('memoApp')
 
     $('#save').click(function () {
       // console.log('Save');
-      memoService.save($scope.id, $scope.memo);
+      memoService.save($scope.file, $scope.memo);
     });
   });
 
