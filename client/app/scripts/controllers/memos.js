@@ -5,9 +5,11 @@
 angular.module('memoApp')
   .controller('MemosCtrl', function ($scope, $http, $routeParams) {
     $scope.localDir = 'file:///Users/eqo/src/nodejs/memo';
+    $scope.hostDir = '/files';
     var types = {
       markdown: ['md'],
-      media: ['pdf', 'jpg', 'gif', 'png']
+      book: ['pdf'],
+      image: ['jpg', 'gif', 'png']
     };
 
     $('.nav li').removeClass('active');

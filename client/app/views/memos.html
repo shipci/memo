@@ -20,10 +20,16 @@
       </a>
     </div>
 
-    <div ng-show="memo.type === 'media'">
-      <span class="glyphicon glyphicon-file"></span>
-      <!-- <a ng-href="{{localDir}}/{{dir}}/{{memo.name}}"> -->
-      <a ng-href="/files/{{dir}}/{{memo.name}}">
+    <div ng-show="memo.type === 'book'">
+      <span class="glyphicon glyphicon-book"></span>
+      <a ng-href="{{hostDir}}/{{dir}}/{{memo.name}}">
+        {{memo.name}}
+      </a>
+    </div>
+
+    <div ng-show="memo.type === 'image'">
+      <span class="glyphicon glyphicon-picture"></span>
+      <a ng-href="{{hostDir}}/{{dir}}/{{memo.name}}">
         {{memo.name}}
       </a>
     </div>
