@@ -9,7 +9,8 @@ angular.module('memoApp')
     var types = {
       markdown: ['md'],
       book: ['pdf'],
-      image: ['jpg', 'gif', 'png']
+      image: ['jpg', 'gif', 'png'],
+      ms: ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx']
     };
 
     $('.nav li').removeClass('active');

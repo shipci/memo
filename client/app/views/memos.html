@@ -33,5 +33,12 @@
         {{memo.name}}
       </a>
     </div>
+
+    <div ng-show="memo.type === 'ms'">
+      <span class="glyphicon glyphicon-calendar"></span>
+      <a ng-href="{{hostDir}}/{{dir}}/{{memo.name}}">
+        {{memo.name}}
+      </a>
+    </div>
   </li>
 </ul>
