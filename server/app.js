@@ -32,6 +32,7 @@ if ('development' === app.get('env')) {
 app.get('/', routes.index);
 app.get('/memos/*', memos.list);
 app.get('/memos', memos.list);
+app.get('/files/*', memos.get);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function () {

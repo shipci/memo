@@ -4,6 +4,12 @@
 
 angular.module('memoApp')
   .controller('MemosCtrl', function ($scope, $http, $routeParams) {
+    $scope.localDir = 'file:///Users/eqo/src/nodejs/memo';
+    var types = {
+      markdown: ['md'],
+      media: ['pdf', 'jpg', 'gif', 'png']
+    };
+
     $('.nav li').removeClass('active');
     $('#nav-memos').addClass('active');
 
@@ -25,11 +31,23 @@ angular.module('memoApp')
       fullDir += dirs[i] + '/';
     }
     $scope.dirSplit = dirSplit;
-    console.log($scope.dirSplit);
 
     $scope.memos = [];
 
-    $http.get($scope.dir).success(function (data) {
-      $scope.memos = data;
+    $http.get($scope.dir).success(function (memos) {
+      var mlength = memos.length;
+      for (var i = 0; i < mlength; i++) {
+        for (var type in types) {
+          var tlength = types[type].length;
+          for (var j = 0; j < tlength; j++) {
+            var t = types[type][j];
+            if (memos[i].name.substr(-(t.length + 1)) === ('.' + t)) {
+              memos[i].type = type;
+            }
+          }
+        }
+      }
+
+      $scope.memos = memos;
     });
   });

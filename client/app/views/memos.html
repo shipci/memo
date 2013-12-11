@@ -6,16 +6,24 @@
 
 <ul class="memos-dir">
   <li ng-repeat="memo in memos">
-    <div ng-show="memo.type == 'dir'">
+    <div ng-show="memo.type === 'dir'">
       <span class="glyphicon glyphicon-folder-close"></span>
       <a ng-href="#/{{dir}}/{{memo.name}}">
         {{memo.name}}/
       </a>
     </div>
 
-    <div ng-show="memo.type == 'file'">
+    <div ng-show="memo.type === 'markdown'">
       <span class="glyphicon glyphicon-file"></span>
       <a ng-href="#/{{dir}}/{{memo.name}}">
+        {{memo.name}}
+      </a>
+    </div>
+
+    <div ng-show="memo.type === 'media'">
+      <span class="glyphicon glyphicon-file"></span>
+      <!-- <a ng-href="{{localDir}}/{{dir}}/{{memo.name}}"> -->
+      <a ng-href="/files/{{dir}}/{{memo.name}}">
         {{memo.name}}
       </a>
     </div>

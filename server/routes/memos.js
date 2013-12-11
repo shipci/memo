@@ -107,3 +107,10 @@ exports.list = function(req, res) {
 
   res.send(getMemos(dir));
 };
+
+exports.get = function(req, res) {
+  var file = req.params;
+  // console.log(file);
+
+  res.sendfile(file);
+}
