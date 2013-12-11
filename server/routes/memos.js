@@ -18,13 +18,15 @@ function getMemos (dir) {
     if (fileName.charAt(0) !== '.') {
       var stat = fs.statSync(MEMO_DIR + dir + fileName);
       if (stat.isFile()) {
-        files.push(/* dir + */ fileName);
+        files.push({
+          type: 'file',
+          name: fileName
+        });
       } else if (stat.isDirectory()) {
-        var subDir = {
-          dirName: /* dir + */ fileName
-          // children: getMemos(dir + fileName + '/')
-        };
-        dirs.push(subDir);
+        dirs.push({
+          type: 'dir',
+          name: fileName
+        });
       }
     }
   }

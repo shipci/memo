@@ -6,17 +6,17 @@
 
 <ul class="memos-dir">
   <li ng-repeat="memo in memos">
-    <div ng-show="memo.dirName">
+    <div ng-show="memo.type == 'dir'">
       <span class="glyphicon glyphicon-folder-close"></span>
-      <a ng-href="#/{{dir}}/{{memo.dirName}}">
-        {{memo.dirName}}/
+      <a ng-href="#/{{dir}}/{{memo.name}}">
+        {{memo.name}}/
       </a>
     </div>
 
-    <div ng-hide="memo.dirName">
+    <div ng-show="memo.type == 'file'">
       <span class="glyphicon glyphicon-file"></span>
-      <a ng-href="#/{{dir}}/{{memo}}">
-        {{memo}}
+      <a ng-href="#/{{dir}}/{{memo.name}}">
+        {{memo.name}}
       </a>
     </div>
   </li>
