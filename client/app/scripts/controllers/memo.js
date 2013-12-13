@@ -9,6 +9,13 @@ angular.module('memoApp')
 
     $scope.file = $routeParams.file + '.md';
     // console.log($scope.file);
+
+    var index = $scope.file.lastIndexOf('/');
+    if (index !== -1) {
+      $scope.dir = $scope.file.substr(0, index);
+      // console.log($scope.dir);
+    }
+
     $scope.memo = null;
 
     memoService.watch($scope.file);
