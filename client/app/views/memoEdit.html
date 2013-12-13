@@ -1,5 +1,5 @@
 <div class="row buttons">
-  <div class="col-lg-12">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
     <div class="pull-right">
       <a id="save" ng-href="#/memos/{{file}}" class="btn btn-primary">
         Save
@@ -12,11 +12,11 @@
 </div>
 
 <div class="row">
-  <div class="col-lg-6">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
     <textarea id="md_area" class="form-control" ng-model="memo.content" autofocus></textarea>
   </div>
 
-  <div class="col-lg-6">
+  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
     <div id="html_area" class="form-control">
       <span ng-bind-html="memo.content | markdown"></span>
     </div>
