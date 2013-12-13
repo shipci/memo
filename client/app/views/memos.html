@@ -21,21 +21,27 @@
     </div>
 
     <div ng-show="memo.type === 'book'">
-      <span class="glyphicon glyphicon-book"></span>
+      <a ng-href="{{localDir}}/{{dir}}/{{memo.name}}">
+        <span class="glyphicon glyphicon-book"></span>
+      </a>
       <a ng-href="{{hostDir}}/{{dir}}/{{memo.name}}">
         {{memo.name}}
       </a>
     </div>
 
     <div ng-show="memo.type === 'image'">
-      <span class="glyphicon glyphicon-picture"></span>
+      <a ng-href="{{localDir}}/{{dir}}/{{memo.name}}">
+        <span class="glyphicon glyphicon-picture"></span>
+      </a>
       <a ng-href="{{hostDir}}/{{dir}}/{{memo.name}}">
         {{memo.name}}
       </a>
     </div>
 
     <div ng-show="memo.type === 'ms'">
-      <span class="glyphicon glyphicon-calendar"></span>
+      <a ng-href="{{localDir}}/{{dir}}/{{memo.name}}">
+        <span class="glyphicon glyphicon-calendar"></span>
+      </a>
       <a ng-href="{{hostDir}}/{{dir}}/{{memo.name}}">
         {{memo.name}}
       </a>
