@@ -34,22 +34,20 @@ function getMemos (dir) {
   return dirs.concat(files);
 }
 
-var watcher = null;
-
-function startWatching (socket, fileName) {
-  stopWatching();
+function startWatching (watcher, socket, fileName) {
+  stopWatching(watcher);
 
   // console.log('Watching: ' + fileName);
   watcher = fs.watch(fileName, {persistent: true}, function () {
     // console.log('Detected: ' + fileName);
     sendMemo(socket);
 
-    startWatching(socket, fileName);
+    startWatching(watcher, socket, fileName);
   });
   // console.log(watcher);
 }
 
-function stopWatching () {
+function stopWatching (watcher) {
   if (watcher) {
     // console.log('Unwatched: ');
     watcher.close();
@@ -72,11 +70,13 @@ function sendMemo (socket) {
 
 exports.start = function (io) {
   io.sockets.on('connection', function (socket) {
+    var watcher = null;
+
     // console.log('Connected');
     socket.on('watch', function (file) {
       // console.log('Watching ' + file);
       socket.set('file', file, function () {
-        startWatching(socket, MEMO_DIR + file);
+        startWatching(watcher, socket, MEMO_DIR + file);
         sendMemo(socket);
       });
     });
