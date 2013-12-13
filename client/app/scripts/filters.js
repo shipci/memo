@@ -3,14 +3,14 @@
 'use strict';
 
 angular.module('memoFilters', [])
-  .filter('markdown', function () {
-    var converter = new Showdown.converter({ extensions: ['github'] });
+  .filter('markdown', function ($sce) {
+    var converter = new Showdown.converter({ extensions: ['github', 'youtube'] });
     return function (input) {
       if (!input) {
         return null;
       }
 
       // console.log(input);
-      return converter.makeHtml(input);
+      return $sce.trustAsHtml(converter.makeHtml(input));
     };
   });
