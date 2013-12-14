@@ -1,10 +1,12 @@
+'use strict';
+
 /*  Youtube Extension
     ^http://www.youtube.com/watch?v=0mmx68VmTEo  ->
     <iframe  src=\"//www.youtube.com/embed/0mmx68VmTEo?rel=0\"\nframeborder=\"0\" allowfullscreen></iframe>
 */
 
 (function() {
-  var youtube = function(converter) {
+  var youtube = function() {
     return [
       {
         type: 'lang',
@@ -17,15 +19,16 @@
           var youtubeWH = /^\[(\d+)x(\d+)\].*((youtube\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
           var youtube   = /^.*((youtube\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
 
+          var m;
           if (youtubeWH.test(url)) {
-            var m = url.match(youtubeWH);
+            m = url.match(youtubeWH);
             if (m && m[9].length === 11) {
               width = m[1];
               height = m[2];
               videoId = m[9];
             }
           } else if (youtube.test(url)) {
-            var m = url.match(youtube);
+            m = url.match(youtube);
             if (m && m[7].length === 11) {
               videoId = m[7];
             }
@@ -44,6 +47,6 @@
   // Client-side export
   if (typeof window !== 'undefined' && window.Showdown && window.Showdown.extensions) { window.Showdown.extensions.youtube = youtube; }
   // Server-side export
-  if (typeof module !== 'undefined') module.exports = youtube;
+  if (typeof module !== 'undefined') { module.exports = youtube; }
 
 }());
