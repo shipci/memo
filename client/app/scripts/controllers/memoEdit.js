@@ -7,10 +7,15 @@ angular.module('memoApp')
     $('.nav li').removeClass('active');
     $('#nav-memos').addClass('active');
 
-    var height = (window.innerHeight - $('#md_area').offset().top - 100) + 'px';
-    // console.log(height);
-    $('#md_area').height(height);
-    $('#html_area').height(height);
+    function resize() {
+      var height = (window.innerHeight - $('#md_area').offset().top - 100) + 'px';
+      // console.log(height);
+
+      $('#md_area').height(height);
+      $('#html_area').height(height);
+    }
+    window.onresize = resize;
+    resize();
 
     $scope.file = $routeParams.file + '.md';
     // console.log($scope.file);
