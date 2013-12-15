@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('memoApp')
-  .controller('MemosCtrl', function ($scope, $http, $routeParams) {
+  .controller('MemosCtrl', function ($scope, $http, $routeParams, memoService) {
     $scope.localDir = 'file:///Users/eqo/src/nodejs/memo';
     $scope.hostDir = '/files';
     var types = {
@@ -17,23 +17,7 @@ angular.module('memoApp')
     $('#nav-memos').addClass('active');
 
     $scope.dir = 'memos' + ($routeParams.dir ? '/' + $routeParams.dir : '');
-    // console.log($scope.dir);
-
-    var dirSplit = [];
-    var fullDir = '';
-    var dirs = $scope.dir.split('/');
-    var length = dirs.length;
-    for (var i = 0; i < length; i++) {
-      var dir = {
-        name: dirs[i]
-      };
-      if (i !== length - 1) {
-        dir.link = fullDir + dirs[i];
-      }
-      dirSplit.push(dir);
-      fullDir += dirs[i] + '/';
-    }
-    $scope.dirSplit = dirSplit;
+    $scope.dirSplit = memoService.getDirSplit($scope.dir, true);
 
     $scope.memos = [];
 

@@ -10,10 +10,11 @@ angular.module('memoApp')
     $scope.file = $routeParams.file + '.md';
     // console.log($scope.file);
 
-    var index = $scope.file.lastIndexOf('/');
+    var file = 'memos/' + $scope.file;
+    var index = file.lastIndexOf('/');
     if (index !== -1) {
-      $scope.dir = $scope.file.substr(0, index);
-      // console.log($scope.dir);
+      $scope.dir = file.substr(0, index);
+      $scope.dirSplit = memoService.getDirSplit($scope.dir);
     }
 
     $scope.memo = null;
