@@ -14,8 +14,8 @@ angular.module('memoApp')
     var index = file.lastIndexOf('/');
     if (index !== -1) {
       $scope.dir = file.substr(0, index);
-      $scope.dirSplit = memoService.getDirSplit($scope.dir);
     }
+    $scope.dirSplit = memoService.getDirSplit(file, true);
 
     $scope.memo = null;
 
