@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('memoApp')
-  .controller('MemoCtrl', function ($scope, $routeParams, memoService) {
+  .controller('MemoCtrl', function ($scope, $rootScope, $routeParams, memoService) {
     $('.nav li').removeClass('active');
     $('#nav-memos').addClass('active');
 
@@ -16,6 +16,8 @@ angular.module('memoApp')
       $scope.dir = file.substr(0, index);
     }
     $scope.dirSplit = memoService.getDirSplit(file, true);
+
+    $rootScope.title = $scope.dirSplit[$scope.dirSplit.length - 1].name;
 
     $scope.memo = null;
 

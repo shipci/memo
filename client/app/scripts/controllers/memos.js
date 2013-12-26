@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('memoApp')
-  .controller('MemosCtrl', function ($scope, $http, $routeParams, memoService) {
+  .controller('MemosCtrl', function ($scope, $rootScope, $http, $routeParams, memoService) {
     $scope.localDir = 'file:///Users/eqo/src/nodejs/memo';
     $scope.hostDir = '/files';
     var types = {
@@ -18,6 +18,8 @@ angular.module('memoApp')
 
     $scope.dir = 'memos' + ($routeParams.dir ? '/' + $routeParams.dir : '');
     $scope.dirSplit = memoService.getDirSplit($scope.dir, true);
+
+    $rootScope.title = $scope.dir;
 
     $scope.memos = [];
 
