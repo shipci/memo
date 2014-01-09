@@ -60,10 +60,12 @@ function sendMemo (socket) {
   socket.get('file', function (err, file) {
     // console.log('Loading ' + file);
     fs.readFile(MEMO_DIR + file, function (err, data) {
-      socket.emit('memo', {
-        title: 'Title',
-        content: data.toString()
-      });
+      if (data) {
+        socket.emit('memo', {
+          title: 'Title',
+          content: data.toString()
+        });
+      }
     });
   });
 }
