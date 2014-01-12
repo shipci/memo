@@ -16,17 +16,20 @@ function getMemos (dir) {
     var fileName = fileNames[i];
     // Check if the file is not a hidden file
     if (fileName.charAt(0) !== '.') {
-      var stat = fs.statSync(MEMO_DIR + dir + fileName);
-      if (stat.isFile()) {
-        files.push({
-          type: 'file',
-          name: fileName
-        });
-      } else if (stat.isDirectory()) {
-        dirs.push({
-          type: 'dir',
-          name: fileName
-        });
+      var exists = fs.existsSync(MEMO_DIR + dir + fileName);
+      if (exists) {
+        var stat = fs.statSync(MEMO_DIR + dir + fileName);
+        if (stat.isFile()) {
+          files.push({
+            type: 'file',
+            name: fileName
+          });
+        } else if (stat.isDirectory()) {
+          dirs.push({
+            type: 'dir',
+            name: fileName
+          });
+        }
       }
     }
   }
