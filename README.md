@@ -12,8 +12,7 @@ This allows ....
 
 ```
 git clone https://github.com/eqot/memo.git
-npm install
-bower install
+npm install && bower install
 grunt build
 npm start
 ```
