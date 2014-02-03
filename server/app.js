@@ -7,6 +7,7 @@
 var express = require('express');
 var routes = require('./routes');
 var memos = require('./routes/memos');
+var rss = require('./routes/rss');
 var http = require('http');
 var path = require('path');
 
@@ -33,6 +34,7 @@ app.get('/', routes.index);
 app.get('/memos/*', memos.list);
 app.get('/memos', memos.list);
 app.get('/files/*', memos.get);
+app.get('/memo.rdf', rss.get);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function () {
