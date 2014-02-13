@@ -1,6 +1,30 @@
-<ol class="breadcrumb">
-  <li ng-repeat="d in dirSplit" ng-class="{active: !d.link}"><a ng-show="d.link" ng-href="#/{{d.link}}">{{d.name}}</a><span ng-hide="d.link">{{d.name}}</span></li>
-</ol>
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+    <ol class="breadcrumb col-xs-9 col-sm-10 col-md-10 col-lg-10">
+      <li ng-repeat="d in dirSplit" ng-class="{active: !d.link}"><a ng-show="d.link" ng-href="#/{{d.link}}">{{d.name}}</a><span ng-hide="d.link">{{d.name}}</span></li>
+    </ol>
+    <div class="pull-right">
+      <div class="btn-group">
+        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+          Create
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+          <li role="presentation">
+            <a id="createMemo" data-toggle="modal" data-target="#newMemo">
+              Create a memo...
+            </a>
+          </li>
+          <li role="presentation">
+            <a id="createDir" data-toggle="modal" data-target="#newDir">
+              Create a directory...
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
 
 <ul class="memos-dir">
   <li ng-repeat="memo in memos">
@@ -46,3 +70,39 @@
     </div>
   </li>
 </ul>
+
+<div class="modal fade" id="newMemo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Create a new memo</h4>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control" id="memoName" placeholder="Memo name" ng-model="memoName">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="create(false)">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="newDir" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Create a new directory</h4>
+      </div>
+      <div class="modal-body">
+        <input type="text" class="form-control" id="memoName" placeholder="Directory name" ng-model="dirName">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" ng-click="create(true)">Create</button>
+      </div>
+    </div>
+  </div>
+</div>
