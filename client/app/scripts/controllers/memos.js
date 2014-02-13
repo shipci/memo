@@ -39,4 +39,31 @@ angular.module('memoApp')
 
       $scope.memos = memos;
     });
+
+    $('.modal').on('shown.bs.modal', function (e) {
+      $(this).find('input').focus().select();
+    });
+
+    $('.modal').keypress(function (e) {
+      if (e.charCode === 13) {
+        var isDir = $(e.target).attr('id') === 'dirName';
+        $scope.create(isDir);
+      }
+    });
+
+    $scope.create = function (isDir) {
+      var name;
+      if (isDir) {
+        name = $scope.dirName + '/';
+      } else {
+        name = $scope.memoName;
+      }
+
+      if (name) {
+        $http.post($scope.dir + '/' + name).success(function () {
+        });
+      }
+
+      $('.modal').modal('hide');
+    };
   });

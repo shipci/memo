@@ -33,6 +33,7 @@ if ('development' === app.get('env')) {
 app.get('/', routes.index);
 app.get('/memos/*', memos.list);
 app.get('/memos', memos.list);
+app.post('/memos/*', memos.create);
 app.get('/files/*', memos.get);
 app.get('/memo.rdf', rss.get);
 

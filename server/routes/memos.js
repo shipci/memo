@@ -37,6 +37,31 @@ function getMemos (dir) {
   return dirs.concat(files);
 }
 
+exports.create = function (req, res) {
+  var path = req.params[0];
+
+  var isDir = false;
+  if (path.charAt(path.length - 1) === '/') {
+    isDir = true;
+    path = path.slice(0, -1);
+  }
+
+  fs.exists(MEMO_DIR + path, function (exists) {
+    if (!exists) {
+      if (isDir) {
+        fs.mkdirSync(MEMO_DIR + path);
+      } else {
+        var fd = fs.openSync(MEMO_DIR + path, 'w+');
+        fs.closeSync(fd);
+      }
+    } else {
+      // console.log('already exists: ' + MEMO_DIR + path);
+    }
+  });
+
+  res.send();
+}
+
 function startWatching (watcher, socket, fileName) {
   stopWatching(watcher);
 
