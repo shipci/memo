@@ -62,6 +62,31 @@ exports.create = function (req, res) {
   res.send();
 }
 
+exports.rename = function (req, res) {
+  var path = req.params[0];
+  var newName = req.query.new;
+
+  var isRename = newName.length > 0;
+  if (isRename) {
+    var lastIndex = path.lastIndexOf('/');
+    var newPath;
+    if (lastIndex !== -1) {
+      newPath = path.slice(0, lastIndex) + '/' + newName;
+      fs.rename(MEMO_DIR + path, MEMO_DIR + newPath);
+    }
+  } else {
+    fs.stat(MEMO_DIR + path, function (err, stat) {
+      if (stat.isFile()) {
+        fs.unlink(MEMO_DIR + path);
+      } else {
+        fs.rmdir(MEMO_DIR + path);
+      }
+    });
+  }
+
+  res.send();
+}
+
 function startWatching (watcher, socket, fileName) {
   stopWatching(watcher);
 

@@ -66,4 +66,30 @@ angular.module('memoApp')
 
       $('.modal').modal('hide');
     };
+
+    $scope.menu = function () {
+      $scope.name = this.memo.name;
+      $('#name').val($scope.name);
+      $('#rename').modal('show');
+    };
+
+    $scope.rename = function (isRename) {
+      var newName = isRename ? $scope.newName : '';
+
+      $http.put($scope.dir + '/' + $scope.name + '?new=' + newName).success(function () {
+      });
+
+      $('.modal').modal('hide');
+    };
+  })
+  .directive('ngRightClick', function($parse) {
+    return function(scope, element, attrs) {
+      var fn = $parse(attrs.ngRightClick);
+      element.bind('contextmenu', function(event) {
+        scope.$apply(function() {
+          event.preventDefault();
+          fn(scope, {$event:event});
+        });
+      });
+    };
   });

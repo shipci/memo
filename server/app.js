@@ -34,6 +34,7 @@ app.get('/', routes.index);
 app.get('/memos/*', memos.list);
 app.get('/memos', memos.list);
 app.post('/memos/*', memos.create);
+app.put('/memos/*', memos.rename);
 app.get('/files/*', memos.get);
 app.get('/memo.rdf', rss.get);
 
