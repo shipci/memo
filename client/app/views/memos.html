@@ -68,6 +68,13 @@
         {{memo.name}}
       </a>
     </div>
+
+    <div ng-show="memo.type === 'file'">
+      <span class="glyphicon glyphicon-question-sign"></span>
+      <a ng-href="{{hostDir}}/{{dir}}/{{memo.name}}" ng-right-click="menu(event)">
+        {{memo.name}}
+      </a>
+    </div>
   </li>
 </ul>
 
