@@ -52,12 +52,7 @@ angular.module('memoApp')
     });
 
     $scope.create = function (isDir) {
-      var name;
-      if (isDir) {
-        name = $scope.dirName + '/';
-      } else {
-        name = $scope.memoName;
-      }
+      var name = isDir ? $scope.dirName + '/' : $scope.memoName;
 
       if (name) {
         $http.post($scope.dir + '/' + name).success(function () {
@@ -79,7 +74,7 @@ angular.module('memoApp')
       $http.put($scope.dir + '/' + $scope.name + '?new=' + newName).success(function () {
       });
 
-      $('.modal').modal('hide');
+      $('#rename').modal('hide');
     };
   })
   .directive('ngRightClick', function($parse) {
