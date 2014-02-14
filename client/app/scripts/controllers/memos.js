@@ -23,7 +23,7 @@ angular.module('memoApp')
 
     $scope.memos = [];
 
-    $http.get($scope.dir).success(function (memos) {
+    function readMemos (memos) {
       var mlength = memos.length;
       for (var i = 0; i < mlength; i++) {
         for (var type in types) {
@@ -38,7 +38,9 @@ angular.module('memoApp')
       }
 
       $scope.memos = memos;
-    });
+    }
+
+    $http.get($scope.dir).success(readMemos);
 
     $('.modal').on('shown.bs.modal', function (e) {
       $(this).find('input').focus().select();
@@ -52,18 +54,37 @@ angular.module('memoApp')
     });
 
     $scope.create = function (isDir) {
-      var name;
-      if (isDir) {
-        name = $scope.dirName + '/';
-      } else {
-        name = $scope.memoName;
-      }
+      var name = isDir ? $scope.dirName + '/' : $scope.memoName;
 
       if (name) {
-        $http.post($scope.dir + '/' + name).success(function () {
-        });
+        $http.post($scope.dir + '/' + name).success(readMemos);
       }
 
       $('.modal').modal('hide');
+    };
+
+    $scope.menu = function () {
+      $scope.name = this.memo.name;
+      $('#name').val($scope.name);
+      $('#rename').modal('show');
+    };
+
+    $scope.rename = function (isRename) {
+      var newName = isRename ? $scope.newName : '';
+
+      $http.put($scope.dir + '/' + $scope.name + '?new=' + newName).success(readMemos);
+
+      $('#rename').modal('hide');
+    };
+  })
+  .directive('ngRightClick', function($parse) {
+    return function(scope, element, attrs) {
+      var fn = $parse(attrs.ngRightClick);
+      element.bind('contextmenu', function(event) {
+        scope.$apply(function() {
+          event.preventDefault();
+          fn(scope, {$event:event});
+        });
+      });
     };
   });
