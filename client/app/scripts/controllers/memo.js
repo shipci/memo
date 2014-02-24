@@ -28,5 +28,9 @@ angular.module('memoApp')
       $scope.memo = memo;
       $scope.$apply();
     });
+
+    $scope.publish = function () {
+      // console.log('publish');
+    };
   });
 
