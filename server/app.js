@@ -36,7 +36,7 @@ app.get('/memos', memos.list);
 app.post('/memos/*', memos.create);
 app.put('/memos/*', memos.rename);
 app.get('/files/*', memos.get);
-app.get('/memo.rdf', rss.get);
+app.get('/rss/memo.rdf', rss.get);
 
 var server = http.createServer(app);
 server.listen(app.get('port'), function () {
