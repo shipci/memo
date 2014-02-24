@@ -6,6 +6,13 @@ angular.module('memoFilters', [])
   .filter('markdown', function ($sce) {
     // var converter = new Showdown.converter({ extensions: ['github', 'youtube'] });
     var marked = window.marked;
+    var hljs = window.hljs;
+
+    marked.setOptions({
+      highlight: function (code, lang) {
+        return hljs.highlight(lang, code).value;
+      }
+    });
 
     return function (input) {
       if (!input) {
