@@ -69,9 +69,11 @@ exports.get = function(req, res) {
 
 exports.post = function(req, res) {
   var path = MEMO_DIR_FROM_RSS + req.params[0];
+  var title = req.query.t;
   // console.log(path);
+  // console.log(title);
 
-  var link = RSS_DIR + getDataString() + '_';
+  var link = RSS_DIR + getDataString() + '_' + title;
   // console.log(link);
 
   fs.symlink(path, link, function (err) {

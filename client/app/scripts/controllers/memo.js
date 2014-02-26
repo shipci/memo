@@ -32,7 +32,7 @@ angular.module('memoApp')
     $scope.publish = function () {
       // console.log('publish');
 
-      $http.post('/rss/' + $scope.file);
+      $http.post('/rss/' + $scope.file + '?t=' + $scope.memoTitle);
 
       $('.modal').modal('hide');
     };
