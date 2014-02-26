@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('memoApp')
-  .controller('MemoCtrl', function ($scope, $rootScope, $routeParams, memoService) {
+  .controller('MemoCtrl', function ($scope, $rootScope, $http, $routeParams, memoService) {
     $('.nav li').removeClass('active');
     $('#nav-memos').addClass('active');
 
@@ -28,5 +28,37 @@ angular.module('memoApp')
       $scope.memo = memo;
       $scope.$apply();
     });
+
+    $('.modal').on('show.bs.modal', function (e) {
+      // Get the first line in the content as a candidate of content's title
+      var content = $scope.memo.content;
+      var contentLines = content.split('\n');
+      var title = '';
+      for (var i = 0; i < contentLines.length; i++) {
+        if (contentLines[i]) {
+          title = contentLines[i];
+          break;
+        }
+      }
+
+      // Remove '#' and spaces
+      title = title.replace(/#+\s*/, '');
+      // console.log(title);
+
+      $scope.memoTitle = title;
+      $scope.$apply();
+    });
+
+    $('.modal').on('shown.bs.modal', function (e) {
+      $(this).find('input').focus().select();
+    });
+
+    $scope.publish = function () {
+      // console.log('publish');
+
+      $http.post('/rss/' + $scope.file + '?t=' + $scope.memoTitle);
+
+      $('.modal').modal('hide');
+    };
   });
 

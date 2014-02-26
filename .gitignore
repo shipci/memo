@@ -4,3 +4,4 @@ node_modules
 client/dist
 client/app/bower_components
 memos/private
+memos/.rss
