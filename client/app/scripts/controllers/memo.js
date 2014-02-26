@@ -3,7 +3,7 @@
 'use strict';
 
 angular.module('memoApp')
-  .controller('MemoCtrl', function ($scope, $rootScope, $routeParams, memoService) {
+  .controller('MemoCtrl', function ($scope, $rootScope, $http, $routeParams, memoService) {
     $('.nav li').removeClass('active');
     $('#nav-memos').addClass('active');
 
@@ -31,6 +31,10 @@ angular.module('memoApp')
 
     $scope.publish = function () {
       // console.log('publish');
+
+      $http.post('/rss/' + $scope.file);
+
+      $('.modal').modal('hide');
     };
   });
 
