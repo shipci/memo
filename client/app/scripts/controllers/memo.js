@@ -45,6 +45,11 @@ angular.module('memoApp')
       title = title.replace(/#+\s*/, '');
       // console.log(title);
 
+      // Get title if it is link
+      if (title.match(/\[(.+)\]\(.+\)/)) {
+        title = RegExp.$1;
+      }
+
       $scope.memoTitle = title;
       $scope.$apply();
     });
