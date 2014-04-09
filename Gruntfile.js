@@ -35,9 +35,9 @@ module.exports = function (grunt) {
         files: ['test/spec/{,*/}*.js'],
         tasks: ['newer:jshint:test', 'karma']
       },
-      compass: {
-        files: ['<%= yeoman.app %>/styles/{,*/}*.{scss,sass}'],
-        tasks: ['compass:server', 'autoprefixer']
+      less: {
+        files: ['<%= yeoman.app %>/styles/{,*/}*.less'],
+        tasks: ['less:server', 'autoprefixer']
       },
       styles: {
         files: ['<%= yeoman.app %>/styles/{,*/}*.css'],
@@ -141,33 +141,22 @@ module.exports = function (grunt) {
       }
     },
 
-
-
-
-    // Compiles Sass to CSS and generates necessary files if requested
-    compass: {
-      options: {
-        sassDir: '<%= yeoman.app %>/styles',
-        cssDir: '.tmp/styles',
-        generatedImagesDir: '.tmp/images/generated',
-        imagesDir: '<%= yeoman.app %>/images',
-        javascriptsDir: '<%= yeoman.app %>/scripts',
-        fontsDir: '<%= yeoman.app %>/styles/fonts',
-        importPath: '<%= yeoman.app %>/bower_components',
-        httpImagesPath: '/images',
-        httpGeneratedImagesPath: '/images/generated',
-        httpFontsPath: '/styles/fonts',
-        relativeAssets: false,
-        assetCacheBuster: false
-      },
+    less: {
       dist: {
         options: {
-          generatedImagesDir: '<%= yeoman.dist %>/images/generated'
+          paths: ['<%= yeoman.app %>/bower_components'],
+          cleancss: true
+        },
+        files: {
+          '<%= yeoman.dist %>/styles/main.css': '<%= yeoman.app %>/styles/main.less'
         }
       },
       server: {
         options: {
-          debugInfo: true
+          paths: ['<%= yeoman.app %>/bower_components']
+        },
+        files: {
+          '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.less'
         }
       }
     },
@@ -302,15 +291,15 @@ module.exports = function (grunt) {
     // Run some tasks in parallel to speed up the build process
     concurrent: {
       server: [
-        'compass:server',
+        'less:server',
         'copy:styles'
       ],
       test: [
-        'compass',
+        'less',
         'copy:styles'
       ],
       dist: [
-        'compass:dist',
+        'less:dist',
         'copy:styles',
         'imagemin',
         'svgmin',
