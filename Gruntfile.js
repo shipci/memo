@@ -142,19 +142,18 @@ module.exports = function (grunt) {
     },
 
     less: {
+      options: {
+        paths: ['<%= yeoman.app %>/bower_components']
+      },
       dist: {
         options: {
-          paths: ['<%= yeoman.app %>/bower_components'],
           cleancss: true
         },
         files: {
-          '<%= yeoman.dist %>/styles/main.css': '<%= yeoman.app %>/styles/main.less'
+          '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.less'
         }
       },
       server: {
-        options: {
-          paths: ['<%= yeoman.app %>/bower_components']
-        },
         files: {
           '.tmp/styles/main.css': '<%= yeoman.app %>/styles/main.less'
         }
