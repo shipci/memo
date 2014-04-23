@@ -4,7 +4,7 @@
 
 angular.module('memoApp')
   .service('memoService', function memoService() {
-    this.socket = io.connect('http://localhost');
+    this.socket = io.connect(window.location.protocol + '//' + window.location.hostname);
 
     this.watch = function (file) {
       this.socket.emit('watch', file);

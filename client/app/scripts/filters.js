@@ -4,7 +4,6 @@
 
 angular.module('memoFilters', [])
   .filter('markdown', function ($sce) {
-    // var converter = new Showdown.converter({ extensions: ['github', 'youtube'] });
     var marked = window.marked;
     var hljs = window.hljs;
 
@@ -23,8 +22,6 @@ angular.module('memoFilters', [])
         return null;
       }
 
-      // console.log(input);
-      // return $sce.trustAsHtml(converter.makeHtml(input));
       return $sce.trustAsHtml(marked(input));
     };
   });
