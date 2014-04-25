@@ -4,6 +4,8 @@ var fs = require('fs');
 
 var MEMO_DIR = './memos/';
 
+var watchingFile = null;
+
 function getMemos (dir) {
   var files = [];
   var dirs = [];
@@ -104,21 +106,30 @@ function startWatching (watcher, socket, fileName) {
   stopWatching(watcher);
 
   // console.log('Watching: ' + fileName);
-  watcher = fs.watch(fileName, {persistent: true}, function () {
+  // watcher = fs.watch(fileName, {persistent: true}, function () {
+  fs.watchFile(fileName, {persistent: true, interval: 1000}, function () {
     // console.log('Detected: ' + fileName);
     sendMemo(socket);
 
-    startWatching(watcher, socket, fileName);
+    // startWatching(watcher, socket, fileName);
   });
   // console.log(watcher);
+
+  watchingFile = fileName;
 }
 
 function stopWatching (watcher) {
-  if (watcher) {
+  if (watchingFile) {
     // console.log('Unwatched: ');
-    watcher.close();
+    fs.unwatchFile(watchingFile);
+    watchingFile = null;
   }
-  watcher = null;
+
+  // if (watcher) {
+  //   // console.log('Unwatched: ');
+  //   watcher.close();
+  //   watcher = null;
+  // }
 }
 
 function sendMemo (socket) {
