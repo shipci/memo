@@ -164,7 +164,7 @@ exports.start = function (io) {
 
     socket.on('disconnect', function () {
       // console.log('Disconnected');
-      stopWatching();
+      stopWatching(watcher);
     });
   });
 };
