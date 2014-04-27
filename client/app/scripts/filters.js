@@ -9,7 +9,7 @@ angular.module('memoFilters', [])
 
     marked.setOptions({
       highlight: function (code, lang) {
-        if (lang) {
+        if (lang && hljs.getLanguage(lang)) {
           return hljs.highlight(lang, code).value;
         } else {
           return hljs.highlightAuto(code).value;
