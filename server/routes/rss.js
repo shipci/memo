@@ -19,6 +19,7 @@ exports.get = function(req, res) {
   rssConfig.site_url = url;
   rssConfig.image_url = url + 'images/yeoman.png';
   rssConfig.docs = url;
+  rssConfig.ttl = 60;
 
   var feed = new rss(rssConfig);
 
