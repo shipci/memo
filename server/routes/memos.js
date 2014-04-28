@@ -108,11 +108,15 @@ function startWatching (watcher, socket, fileName) {
   // console.log('Watching: ' + fileName);
 
   if (watchType) {
-    watcher = fs.watch(fileName, {persistent: true}, function () {
-      // console.log('Detected: ' + fileName);
-      sendMemo(socket);
-      startWatching(watcher, socket, fileName);
-    });
+    try {
+      watcher = fs.watch(fileName, {persistent: true}, function () {
+        // console.log('Detected: ' + fileName);
+        sendMemo(socket);
+        startWatching(watcher, socket, fileName);
+      });
+    } catch (e) {
+      console.log(e);
+    }
   } else {
     fs.watchFile(fileName, {persistent: true, interval: 1000}, function () {
       // console.log('Detected: ' + fileName);
