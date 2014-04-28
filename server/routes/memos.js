@@ -4,7 +4,7 @@ var fs = require('fs');
 
 var MEMO_DIR = './memos/';
 
-var watchingFile = null;
+var watchType = (process.env._system_name === 'OSX');
 
 function getMemos (dir) {
   var files = [];
@@ -106,30 +106,34 @@ function startWatching (watcher, socket, fileName) {
   stopWatching(watcher);
 
   // console.log('Watching: ' + fileName);
-  // watcher = fs.watch(fileName, {persistent: true}, function () {
-  fs.watchFile(fileName, {persistent: true, interval: 1000}, function () {
-    // console.log('Detected: ' + fileName);
-    sendMemo(socket);
 
-    // startWatching(watcher, socket, fileName);
-  });
-  // console.log(watcher);
-
-  watchingFile = fileName;
+  if (watchType) {
+    watcher = fs.watch(fileName, {persistent: true}, function () {
+      // console.log('Detected: ' + fileName);
+      sendMemo(socket);
+      startWatching(watcher, socket, fileName);
+    });
+  } else {
+    fs.watchFile(fileName, {persistent: true, interval: 1000}, function () {
+      // console.log('Detected: ' + fileName);
+      sendMemo(socket);
+    });
+    watcher = fileName;
+  }
 }
 
 function stopWatching (watcher) {
-  if (watchingFile) {
+  if (watcher) {
     // console.log('Unwatched: ');
-    fs.unwatchFile(watchingFile);
-    watchingFile = null;
-  }
 
-  // if (watcher) {
-  //   // console.log('Unwatched: ');
-  //   watcher.close();
-  //   watcher = null;
-  // }
+    if (watchType) {
+      watcher.close();
+    } else {
+      fs.unwatchFile(watcher);
+    }
+
+    watcher = null;
+  }
 }
 
 function sendMemo (socket) {
