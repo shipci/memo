@@ -42,6 +42,13 @@ angular.module('memoApp')
 
     $http.get($scope.dir).success(readMemos);
 
+    var readmeFile = $routeParams.dir + '/README.md';
+    memoService.watch(readmeFile);
+    memoService.load(readmeFile, function (memo) {
+      $scope.memo = memo;
+      $scope.$apply();
+    });
+
     $('.modal').on('shown.bs.modal', function (e) {
       $(this).find('input').focus().select();
     });

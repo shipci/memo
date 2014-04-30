@@ -107,6 +107,10 @@ function startWatching (watcher, socket, fileName) {
 
   // console.log('Watching: ' + fileName);
 
+  if (!fs.existsSync(fileName)) {
+    return;
+  }
+
   if (watchType) {
     try {
       watcher = fs.watch(fileName, {persistent: true}, function () {
