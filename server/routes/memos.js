@@ -193,7 +193,7 @@ exports.start = function (io) {
 };
 
 exports.list = function(req, res) {
-  var dir = req.params + '/';
+  var dir = (req.params.dir || '') + '/';
   // console.log(dir);
 
   res.send(getMemos(dir));
