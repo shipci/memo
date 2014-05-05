@@ -1,8 +1,10 @@
 
+var express = require('express');
+var rss = express.Router();
+
 var rssConfig = require('../config').rssConfig;
 
-var rss = require('rss');
-
+var Rss = require('rss');
 var fs = require('fs');
 
 var MEMO_DIR = './memos/';
@@ -12,8 +14,7 @@ var RSS_DIR = MEMO_DIR + '.rss/';
 
 var marked = require('marked');
 
-exports.get = function(req, res) {
-
+rss.get('/memo.rdf', function(req, res) {
   var url =  'http://' + req.headers.host + '/';
   rssConfig.feed_url = url + 'rss/memo.rdf';
   rssConfig.site_url = url;
@@ -21,7 +22,7 @@ exports.get = function(req, res) {
   rssConfig.docs = url;
   rssConfig.ttl = 60;
 
-  var feed = new rss(rssConfig);
+  var feed = new Rss(rssConfig);
 
   fs.readdir(RSS_DIR, function (err, files) {
     files.sort(function (a, b) {
@@ -66,9 +67,9 @@ exports.get = function(req, res) {
     // res.type('rss');
     res.send(feed.xml());
   });
-};
+});
 
-exports.post = function(req, res) {
+rss.post('/*', function(req, res) {
   var path = MEMO_DIR_FROM_RSS + req.params[0];
   var title = req.query.t;
   // console.log(path);
@@ -84,7 +85,7 @@ exports.post = function(req, res) {
   });
 
   res.send();
-};
+});
 
 function getDataString() {
   var date = new Date();
@@ -107,3 +108,5 @@ function getDataString() {
     return value;
   }
 }
+
+module.exports.rss = rss;

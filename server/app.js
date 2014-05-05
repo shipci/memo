@@ -7,7 +7,6 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var memos = require('./routes/memos');
-var rss = require('./routes/rss');
 
 var app = express();
 
@@ -28,8 +27,7 @@ app.get('/memos', memos.list);
 app.post('/memos/*', memos.create);
 app.put('/memos/*', memos.rename);
 app.get('/files/*', memos.get);
-app.get('/rss/memo.rdf', rss.get);
-app.post('/rss/*', rss.post);
+app.use('/rss', require('./routes/rss').rss);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
