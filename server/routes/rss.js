@@ -1,3 +1,4 @@
+'use strict';
 
 var express = require('express');
 var rss = express.Router();
@@ -88,6 +89,17 @@ rss.post('/*', function(req, res) {
 });
 
 function getDataString() {
+  function getValue(funcName) {
+    var value = date['getUTC' + funcName]();
+    if (funcName === 'Month') {
+      value++;
+    }
+    if (value < 10) {
+      value = '0' + value;
+    }
+    return value;
+  }
+
   var date = new Date();
 
   var funcNames = ['FullYear', 'Month', 'Date', 'Hours', 'Minutes', 'Seconds'];
@@ -96,17 +108,6 @@ function getDataString() {
     dateString += getValue(funcNames[i]);
   }
   return dateString;
-
-  function getValue(funcName) {
-    var value = date['getUTC' + funcName]();
-    if (funcName == 'Month') {
-      value++;
-    }
-    if (value < 10) {
-      value = '0' + value;
-    }
-    return value;
-  }
 }
 
 module.exports.rss = rss;

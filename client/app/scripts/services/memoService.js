@@ -32,16 +32,16 @@ angular.module('memoApp')
       var dirs = dir.split('/');
       var length = dirs.length;
       for (var i = 0; i < length; i++) {
-        var dir = {
+        var d = {
           name: dirs[i]
         };
         if (!disableLastItem || (i !== length - 1)) {
-          dir.link = fullDir + dirs[i];
+          d.link = fullDir + dirs[i];
         }
-        dirSplit.push(dir);
+        dirSplit.push(d);
         fullDir += dirs[i] + '/';
       }
 
       return dirSplit;
-    }
+    };
   });
