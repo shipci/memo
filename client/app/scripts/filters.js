@@ -1,5 +1,3 @@
-/*global Showdown */
-
 'use strict';
 
 angular.module('memoFilters', [])

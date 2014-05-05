@@ -1,4 +1,4 @@
 [{
   "name"      : "memo",
-  "script"    : "./server/app.js"
+  "script"    : "./server/bin/www"
 }]
