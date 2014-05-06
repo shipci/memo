@@ -67,7 +67,7 @@ memos.post(/^(.*)$/, function (req, res) {
     return getMemoList(dir).then(function (memoList) {
       res.send(memoList);
     });
-  }).fail(function (error) {
+  }).catch(function (error) {
     res.send(500, {error: error});
   });
 });
@@ -86,7 +86,7 @@ function makeFile (file) {
   var fs_open = Q.denodeify(fs.open);
   fs_open(path.join(MEMO_DIR, file), 'wx').then(function (fd) {
     fs.close(fd, deferred.makeNodeResolver());
-  }).fail(function (error) {
+  }).catch(function (error) {
     deferred.reject(error);
   });
 
@@ -108,7 +108,7 @@ memos.put(/^(.*)$/, function (req, res) {
     return getMemoList(dir).then(function (memoList) {
       res.send(memoList);
     });
-  }).fail(function (error) {
+  }).catch(function (error) {
     res.send(500, {error: error});
   });
 });
@@ -125,7 +125,7 @@ memos.delete(/^(.*)$/, function (req, res) {
         res.send(memoList);
       });
     });
-  }).fail(function (error) {
+  }).catch(function (error) {
     res.send(500, {error: error});
   });
 });
