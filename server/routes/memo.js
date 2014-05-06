@@ -54,11 +54,16 @@ function getFileInfo (dir, file) {
 memos.post(/^(.*)$/, function (req, res) {
   var file = req.params[0];
 
-  var makeFunc = file.charAt(file.length - 1) === '/' ? makeDir : makeFile;
-  makeFunc(file).then(function () {
-    var lastIndex = file.lastIndexOf('/');
-    var dir = path.join(MEMO_DIR, file.slice(0, lastIndex) + '/');
+  var makeFunc;
+  if (file.charAt(file.length - 1) === '/') {
+    makeFunc = makeDir;
+    file = file.slice(0, -1);
+  } else {
+    makeFunc = makeFile;
+  }
 
+  makeFunc(file).then(function () {
+    var dir = path.join(MEMO_DIR, getDir(file));
     return getMemoList(dir).then(function (memoList) {
       res.send(memoList);
     });
