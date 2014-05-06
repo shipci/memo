@@ -76,13 +76,17 @@ angular.module('memoApp')
       $('#rename').modal('show');
     };
 
-    $scope.rename = function (isRename) {
-      var newName = isRename ? $scope.newName : '';
-
-      $http.put($scope.dir + '/' + $scope.name + '?new=' + newName).success(readMemos);
+    $scope.rename = function () {
+      $http.put($scope.dir + '/' + $scope.name + '?new=' + $scope.newName).success(readMemos);
 
       $('#rename').modal('hide');
     };
+
+    $scope.delete = function () {
+      $http.delete($scope.dir + '/' + $scope.name).success(readMemos);
+
+      $('#rename').modal('hide');
+    }
   })
   .directive('ngRightClick', function($parse) {
     return function(scope, element, attrs) {

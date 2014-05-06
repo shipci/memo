@@ -108,5 +108,22 @@ memos.put(/^(.*)$/, function (req, res) {
   });
 });
 
+memos.delete(/^(.*)$/, function (req, res) {
+  var file = path.join(MEMO_DIR, req.params[0]);
+  var dir = getDir(file);
+
+  var fs_stat = Q.denodeify(fs.stat);
+  fs_stat(file).then(function (stat) {
+    var removeFunc = Q.denodeify(stat.isFile() ? fs.unlink : fs.rmdir);
+    removeFunc(file).then(function () {
+      return getMemoList(dir).then(function (memoList) {
+        res.send(memoList);
+      });
+    });
+  }).fail(function (error) {
+    res.send(500, {error: error});
+  })
+});
+
 
 module.exports.memos = memos;
