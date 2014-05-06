@@ -127,7 +127,7 @@ memos.delete(/^(.*)$/, function (req, res) {
     });
   }).fail(function (error) {
     res.send(500, {error: error});
-  })
+  });
 });
 
 

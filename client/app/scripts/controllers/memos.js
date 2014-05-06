@@ -49,7 +49,7 @@ angular.module('memoApp')
       $scope.$apply();
     });
 
-    $('.modal').on('shown.bs.modal', function (e) {
+    $('.modal').on('shown.bs.modal', function () {
       $(this).find('input').focus().select();
     });
 
@@ -86,7 +86,7 @@ angular.module('memoApp')
       $http.delete($scope.dir + '/' + $scope.name).success(readMemos);
 
       $('#rename').modal('hide');
-    }
+    };
   })
   .directive('ngRightClick', function($parse) {
     return function(scope, element, attrs) {
