@@ -24,8 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
-app.get('/memos/:dir', memos.list);
-app.get('/memos', memos.list);
+app.use('/memos', require('./routes/memo').memos);
 app.post('/memos/*', memos.create);
 app.put('/memos/*', memos.rename);
 app.get('/files/*', memos.get);
