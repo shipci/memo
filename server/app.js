@@ -25,7 +25,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
 app.use('/memos', require('./routes/memo').memos);
-app.post('/memos/*', memos.create);
 app.put('/memos/*', memos.rename);
 app.get('/files/*', memos.get);
 app.use('/rss', require('./routes/rss').rss);
