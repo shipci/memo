@@ -88,5 +88,25 @@ function makeFile (file) {
   return deferred.promise;
 }
 
+function getDir (file) {
+  var lastIndex = file.lastIndexOf('/');
+  return lastIndex !== -1 ? file.slice(0, lastIndex) : '';
+}
+
+memos.put(/^(.*)$/, function (req, res) {
+  var file = path.join(MEMO_DIR, req.params[0]);
+  var dir = getDir(file);
+  var newFile = path.join(dir, req.query.new);
+
+  var fs_rename = Q.denodeify(fs.rename);
+  fs_rename(file, newFile).then(function () {
+    return getMemoList(dir).then(function (memoList) {
+      res.send(memoList);
+    });
+  }).fail(function (error) {
+    res.send(500, {error: error});
+  });
+});
+
 
 module.exports.memos = memos;
