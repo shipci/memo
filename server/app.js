@@ -3,7 +3,7 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
-var logger = require('morgan');
+// var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -24,10 +24,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
-app.get('/memos/:dir', memos.list);
-app.get('/memos', memos.list);
-app.post('/memos/*', memos.create);
-app.put('/memos/*', memos.rename);
+app.use('/memos', require('./routes/memo').memos);
 app.get('/files/*', memos.get);
 app.use('/rss', require('./routes/rss').rss);
 

@@ -29,7 +29,7 @@ angular.module('memoApp')
       $scope.$apply();
     });
 
-    $('.modal').on('show.bs.modal', function (e) {
+    $('.modal').on('show.bs.modal', function () {
       // Get the first line in the content as a candidate of content's title
       var content = $scope.memo.content;
       var contentLines = content.split('\n');
@@ -54,7 +54,7 @@ angular.module('memoApp')
       $scope.$apply();
     });
 
-    $('.modal').on('shown.bs.modal', function (e) {
+    $('.modal').on('shown.bs.modal', function () {
       $(this).find('input').focus().select();
     });
 

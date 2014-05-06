@@ -49,7 +49,7 @@ angular.module('memoApp')
       $scope.$apply();
     });
 
-    $('.modal').on('shown.bs.modal', function (e) {
+    $('.modal').on('shown.bs.modal', function () {
       $(this).find('input').focus().select();
     });
 
@@ -76,10 +76,14 @@ angular.module('memoApp')
       $('#rename').modal('show');
     };
 
-    $scope.rename = function (isRename) {
-      var newName = isRename ? $scope.newName : '';
+    $scope.rename = function () {
+      $http.put($scope.dir + '/' + $scope.name + '?new=' + $scope.newName).success(readMemos);
 
-      $http.put($scope.dir + '/' + $scope.name + '?new=' + newName).success(readMemos);
+      $('#rename').modal('hide');
+    };
+
+    $scope.delete = function () {
+      $http.delete($scope.dir + '/' + $scope.name).success(readMemos);
 
       $('#rename').modal('hide');
     };
