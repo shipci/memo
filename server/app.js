@@ -8,7 +8,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
-var memos = require('./routes/memos');
+var memos = require('./routes/memos').memos;
+var watch = require('./routes/watch').watch;
+var rss = require('./routes/rss').rss;
 
 var app = express();
 
@@ -24,9 +26,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
-app.use('/memos', require('./routes/memo').memos);
-app.get('/files/*', memos.get);
-app.use('/rss', require('./routes/rss').rss);
+app.use('/memos', memos);
+app.use('/watch', watch);
+app.use('/rss', rss);
 
 /// catch 404 and forwarding to error handler
 app.use(function(req, res, next) {
@@ -59,7 +61,7 @@ app.use(function(err, req, res) {
   });
 });
 
-app.memos = memos;
+app.watch = watch;
 
 
 module.exports = app;

@@ -1,208 +1,141 @@
 'use strict';
 
 var fs = require('fs');
+var path = require('path');
+var Q = require('q');
 
-var MEMO_DIR = './memos/';
+var MEMO_DIR = './memos';
 
-var watchType = (process.env._system_name === 'OSX');
+var memos = require('express').Router();
 
-function getMemos (dir) {
-  var files = [];
-  var dirs = [];
+memos.get(/^(.*)$/, function (req, res) {
+  var file = path.join(MEMO_DIR, req.params[0]);
 
-  dir = dir || '';
-
-  var fileNames = fs.readdirSync(MEMO_DIR + dir);
-  var length = fileNames.length;
-  for (var i = 0; i < length; i++) {
-    var fileName = fileNames[i];
-    // Check if the file is not a hidden file
-    if (fileName.charAt(0) !== '.') {
-      var exists = fs.existsSync(MEMO_DIR + dir + fileName);
-      if (exists) {
-        var stat = fs.statSync(MEMO_DIR + dir + fileName);
-        if (stat.isFile()) {
-          files.push({
-            type: 'file',
-            name: fileName
-          });
-        } else if (stat.isDirectory()) {
-          dirs.push({
-            type: 'dir',
-            name: fileName
-          });
-        }
-      }
-    }
-  }
-
-  return dirs.concat(files);
-}
-
-exports.create = function (req, res) {
-  var path = req.params[0];
-
-  var isDir = false;
-  if (path.charAt(path.length - 1) === '/') {
-    isDir = true;
-    path = path.slice(0, -1);
-  }
-
-  fs.exists(MEMO_DIR + path, function (exists) {
-    if (!exists) {
-      if (isDir) {
-        fs.mkdirSync(MEMO_DIR + path);
-      } else {
-        var fd = fs.openSync(MEMO_DIR + path, 'w+');
-        fs.closeSync(fd);
-      }
-
-      var lastIndex = path.lastIndexOf('/');
-      if (lastIndex !== -1) {
-        var dir = path.slice(0, lastIndex) + '/';
-        res.send(getMemos(dir));
-        return;
-      }
-    } else {
-      // console.log('already exists: ' + MEMO_DIR + path);
-    }
-
-    res.send();
-  });
-};
-
-exports.rename = function (req, res) {
-  var path = req.params[0];
-  var newName = req.query.new;
-
-  var lastIndex;
-  var isRename = newName.length > 0;
-  if (isRename) {
-    lastIndex = path.lastIndexOf('/');
-    var newPath;
-    if (lastIndex !== -1) {
-      newPath = path.slice(0, lastIndex) + '/' + newName;
-      fs.renameSync(MEMO_DIR + path, MEMO_DIR + newPath);
-    }
-  } else {
-    var stat = fs.statSync(MEMO_DIR + path);
+  var fs_stat = Q.denodeify(fs.stat);
+  fs_stat(file).then(function (stat) {
     if (stat.isFile()) {
-      fs.unlinkSync(MEMO_DIR + path);
+      res.sendfile(file);
     } else {
-      fs.rmdirSync(MEMO_DIR + path);
-    }
-  }
-
-  lastIndex = path.lastIndexOf('/');
-  if (lastIndex !== -1) {
-    var dir = path.slice(0, lastIndex) + '/';
-    res.send(getMemos(dir));
-    return;
-  }
-
-  res.send();
-};
-
-function startWatching (watcher, socket, fileName) {
-  stopWatching(watcher);
-
-  // console.log('Watching: ' + fileName);
-
-  if (!fs.existsSync(fileName)) {
-    return;
-  }
-
-  if (watchType) {
-    try {
-      watcher = fs.watch(fileName, {persistent: true}, function () {
-        // console.log('Detected: ' + fileName);
-        sendMemo(socket);
-        startWatching(watcher, socket, fileName);
+      getMemoList(file).then(function (memoList) {
+        res.send(memoList);
+      }, function (error) {
+        res.send(500, {error: error});
       });
-    } catch (e) {
-      console.log(e);
     }
+  });
+});
+
+function getMemoList (dir) {
+  var deferred = Q.defer();
+
+  var fs_readdir = Q.denodeify(fs.readdir);
+  fs_readdir(dir).then(function (files) {
+    Q.all(files.map(function (file) {
+      return getFileInfo(dir, file);
+    })).then(function (memoList) {
+      deferred.resolve(memoList);
+    });
+  }, function (error) {
+    deferred.reject(error);
+  });
+
+  return deferred.promise;
+}
+
+function getFileInfo (dir, file) {
+  var deferred = Q.defer();
+
+  var fs_stat = Q.denodeify(fs.stat);
+  fs_stat(path.join(dir, file)).then(function (stat) {
+    var fileInfo = {
+      name: file,
+      type: stat.isFile() ? 'file' : 'dir',
+      hidden: file.charAt(0) === '.'
+    };
+    deferred.resolve(fileInfo);
+  });
+
+  return deferred.promise;
+}
+
+memos.post(/^(.*)$/, function (req, res) {
+  var file = req.params[0];
+
+  var makeFunc;
+  if (file.charAt(file.length - 1) === '/') {
+    makeFunc = makeDir;
+    file = file.slice(0, -1);
   } else {
-    fs.watchFile(fileName, {persistent: true, interval: 1000}, function () {
-      // console.log('Detected: ' + fileName);
-      sendMemo(socket);
-    });
-    watcher = fileName;
+    makeFunc = makeFile;
   }
-}
 
-function stopWatching (watcher) {
-  if (watcher) {
-    // console.log('Unwatched: ');
-
-    if (watchType) {
-      watcher.close();
-    } else {
-      fs.unwatchFile(watcher);
-    }
-
-    watcher = null;
-  }
-}
-
-function sendMemo (socket) {
-  // console.log('Sending');
-  socket.get('file', function (err, file) {
-    // console.log('Loading ' + file);
-    fs.readFile(MEMO_DIR + file, function (err, data) {
-      if (data) {
-        socket.emit('memo', {
-          title: 'Title',
-          content: data.toString()
-        });
-      }
+  makeFunc(file).then(function () {
+    var dir = path.join(MEMO_DIR, getDir(file));
+    return getMemoList(dir).then(function (memoList) {
+      res.send(memoList);
     });
+  }).catch(function (error) {
+    res.send(500, {error: error});
   });
+});
+
+function makeDir (file) {
+  var deferred = Q.defer();
+
+  fs.mkdir(path.join(MEMO_DIR, file), deferred.makeNodeResolver());
+
+  return deferred.promise;
 }
 
-exports.start = function (io) {
-  io.sockets.on('connection', function (socket) {
-    var watcher = null;
+function makeFile (file) {
+  var deferred = Q.defer();
 
-    // console.log('Connected');
-    socket.on('watch', function (file) {
-      // console.log('Watching ' + file);
-      socket.set('file', file, function () {
-        startWatching(watcher, socket, MEMO_DIR + file);
-        sendMemo(socket);
+  var fs_open = Q.denodeify(fs.open);
+  fs_open(path.join(MEMO_DIR, file), 'wx').then(function (fd) {
+    fs.close(fd, deferred.makeNodeResolver());
+  }).catch(function (error) {
+    deferred.reject(error);
+  });
+
+  return deferred.promise;
+}
+
+function getDir (file) {
+  var lastIndex = file.lastIndexOf('/');
+  return lastIndex !== -1 ? file.slice(0, lastIndex) : '';
+}
+
+memos.put(/^(.*)$/, function (req, res) {
+  var file = path.join(MEMO_DIR, req.params[0]);
+  var dir = getDir(file);
+  var newFile = path.join(dir, req.query.new);
+
+  var fs_rename = Q.denodeify(fs.rename);
+  fs_rename(file, newFile).then(function () {
+    return getMemoList(dir).then(function (memoList) {
+      res.send(memoList);
+    });
+  }).catch(function (error) {
+    res.send(500, {error: error});
+  });
+});
+
+memos.delete(/^(.*)$/, function (req, res) {
+  var file = path.join(MEMO_DIR, req.params[0]);
+  var dir = getDir(file);
+
+  var fs_stat = Q.denodeify(fs.stat);
+  fs_stat(file).then(function (stat) {
+    var removeFunc = Q.denodeify(stat.isFile() ? fs.unlink : fs.rmdir);
+    removeFunc(file).then(function () {
+      return getMemoList(dir).then(function (memoList) {
+        res.send(memoList);
       });
     });
-
-    socket.on('save', function (data) {
-      // console.log('Saving');
-      // console.log(data.file);
-      // console.log(data.memo);
-
-      fs.writeFile(MEMO_DIR + data.file, data.memo.content, function (err) {
-        if (err) {
-          throw err;
-        }
-        // console.log('Saved');
-      });
-    });
-
-    socket.on('disconnect', function () {
-      // console.log('Disconnected');
-      stopWatching(watcher);
-    });
+  }).catch(function (error) {
+    res.send(500, {error: error});
   });
-};
+});
 
-exports.list = function(req, res) {
-  var dir = (req.params.dir || '') + '/';
-  // console.log(dir);
 
-  res.send(getMemos(dir));
-};
-
-exports.get = function(req, res) {
-  var file = req.params;
-  // console.log(file);
-
-  res.sendfile(file);
-};
+module.exports.memos = memos;

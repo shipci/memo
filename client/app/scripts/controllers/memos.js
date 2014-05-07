@@ -5,7 +5,7 @@
 angular.module('memoApp')
   .controller('MemosCtrl', function ($scope, $rootScope, $http, $routeParams, memoService) {
     $scope.localDir = 'file:///Users/eqo/src/nodejs/memo';
-    $scope.hostDir = '/files';
+    $scope.hostDir = '';
     var types = {
       markdown: ['md'],
       book: ['pdf'],
