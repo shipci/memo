@@ -1,15 +1,14 @@
 'use strict';
 
+var memos = require('express').Router();
+
 var fs = require('fs');
 var path = require('path');
 var Q = require('q');
-
-var MEMO_DIR = './memos';
-
-var memos = require('express').Router();
+var memoConfig = require('../config').memoConfig;
 
 memos.get(/^(.*)$/, function (req, res) {
-  var file = path.join(MEMO_DIR, req.params[0]);
+  var file = path.join(memoConfig.dir, req.params[0]);
 
   var fs_stat = Q.denodeify(fs.stat);
   fs_stat(file).then(function (stat) {
@@ -70,7 +69,7 @@ memos.post(/^(.*)$/, function (req, res) {
   }
 
   makeFunc(file).then(function () {
-    var dir = path.join(MEMO_DIR, getDir(file));
+    var dir = path.join(memoConfig.dir, getDir(file));
     return getMemoList(dir).then(function (memoList) {
       res.send(memoList);
     });
@@ -82,7 +81,7 @@ memos.post(/^(.*)$/, function (req, res) {
 function makeDir (file) {
   var deferred = Q.defer();
 
-  fs.mkdir(path.join(MEMO_DIR, file), deferred.makeNodeResolver());
+  fs.mkdir(path.join(memoConfig.dir, file), deferred.makeNodeResolver());
 
   return deferred.promise;
 }
@@ -91,7 +90,7 @@ function makeFile (file) {
   var deferred = Q.defer();
 
   var fs_open = Q.denodeify(fs.open);
-  fs_open(path.join(MEMO_DIR, file), 'wx').then(function (fd) {
+  fs_open(path.join(memoConfig.dir, file), 'wx').then(function (fd) {
     fs.close(fd, deferred.makeNodeResolver());
   }).catch(function (error) {
     deferred.reject(error);
@@ -106,7 +105,7 @@ function getDir (file) {
 }
 
 memos.put(/^(.*)$/, function (req, res) {
-  var file = path.join(MEMO_DIR, req.params[0]);
+  var file = path.join(memoConfig.dir, req.params[0]);
   var dir = getDir(file);
   var newFile = path.join(dir, req.query.new);
 
@@ -121,7 +120,7 @@ memos.put(/^(.*)$/, function (req, res) {
 });
 
 memos.delete(/^(.*)$/, function (req, res) {
-  var file = path.join(MEMO_DIR, req.params[0]);
+  var file = path.join(memoConfig.dir, req.params[0]);
   var dir = getDir(file);
 
   var fs_stat = Q.denodeify(fs.stat);
