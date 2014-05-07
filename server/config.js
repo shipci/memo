@@ -1,5 +1,9 @@
 'use strict';
 
+exports.memoConfig = {
+  dir: './memos'
+};
+
 exports.rssConfig = {
   title: 'memo blog',
   description: 'memo blog',

@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var memos = require('./routes/memos');
+var watch = require('./routes/watch').watch;
 
 var app = express();
 
@@ -25,6 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', routes.index);
 app.use('/memos', require('./routes/memo').memos);
+app.use('/watch', watch);
 app.get('/files/*', memos.get);
 app.use('/rss', require('./routes/rss').rss);
 
@@ -59,7 +61,7 @@ app.use(function(err, req, res) {
   });
 });
 
-app.memos = memos;
+app.watch = watch;
 
 
 module.exports = app;
