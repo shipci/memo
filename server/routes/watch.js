@@ -1,6 +1,7 @@
 'use strict';
 
 var watch = require('express').Router();
+
 var fs = require('fs');
 var path = require('path');
 var memoConfig = require('../config').memoConfig;
