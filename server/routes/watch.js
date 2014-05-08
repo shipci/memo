@@ -40,8 +40,6 @@ function startWatching (watcher, socket, fileName) {
     return;
   }
 
-  stopWatching(watcher);
-
   if (!fs.existsSync(fileName)) {
     return;
   }
@@ -50,6 +48,8 @@ function startWatching (watcher, socket, fileName) {
     try {
       watcher = fs.watch(fileName, {persistent: true}, function () {
         sendMemo(socket);
+
+        stopWatching(watcher);
         startWatching(watcher, socket, fileName);
       });
     } catch (e) {
