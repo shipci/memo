@@ -6,6 +6,7 @@ var fs = require('fs');
 var path = require('path');
 var memoConfig = require('../config').memoConfig;
 
+var enableWatch = process.env.WATCH && process.env.WATCH === 'true';
 var watchType = process.env._system_name === 'OSX';
 
 watch.start = function (server) {
@@ -35,6 +36,10 @@ watch.start = function (server) {
 };
 
 function startWatching (watcher, socket, fileName) {
+  if (!enableWatch) {
+    return;
+  }
+
   stopWatching(watcher);
 
   if (!fs.existsSync(fileName)) {

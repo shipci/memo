@@ -1,0 +1,8 @@
+[{
+  "name"      : "memo",
+  "script"    : "./server/bin/www",
+  "env": {
+    "NODE_ENV": "development",
+    "WATCH": "true"
+  }
+}]
