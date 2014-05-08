@@ -23,7 +23,11 @@ app.use(favicon());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '../client/dist')));
+} else {
+  app.use(express.static(path.join(__dirname, '../client/app')));
+}
 
 app.get('/', routes.index);
 app.use('/memos', memos);

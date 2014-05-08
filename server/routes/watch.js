@@ -10,7 +10,15 @@ var enableWatch = process.env.WATCH && process.env.WATCH === 'true';
 var watchType = process.env._system_name === 'OSX';
 
 watch.start = function (server) {
-  var io = require('socket.io').listen(server, {'log level': 0});
+  var io = require('socket.io').listen(server);
+
+  if (process.env.NODE_ENV === 'production') {
+    io.enable('browser client minification');
+    io.enable('browser client etag');
+    io.enable('browser client gzip');
+    io.set('log level', 1);
+  }
+
   io.sockets.on('connection', function (socket) {
     var watcher = null;
 
