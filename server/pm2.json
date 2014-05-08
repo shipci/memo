@@ -1,4 +1,0 @@
-[{
-  "name"      : "memo",
-  "script"    : "./server/bin/www"
-}]
