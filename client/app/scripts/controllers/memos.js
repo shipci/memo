@@ -27,6 +27,10 @@ angular.module('memoApp')
       for (var i = 0, l = memos.length; i < l; i++) {
         var memo = memos[i];
 
+        if (memo.hidden) {
+          continue;
+        }
+
         var ext = memo.name.split('.').pop();
         for (var type in types) {
           if (types[type].indexOf(ext) !== -1) {
