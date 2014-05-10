@@ -24,20 +24,18 @@ angular.module('memoApp')
     $scope.memos = [];
 
     function readMemos (memos) {
-      var mlength = memos.length;
-      for (var i = 0; i < mlength; i++) {
+      for (var i = 0, l = memos.length; i < l; i++) {
+        var memo = memos[i];
+
+        var ext = memo.name.split('.').pop();
         for (var type in types) {
-          var tlength = types[type].length;
-          for (var j = 0; j < tlength; j++) {
-            var t = types[type][j];
-            if (memos[i].name.substr(-(t.length + 1)) === ('.' + t)) {
-              memos[i].type = type;
-            }
+          if (types[type].indexOf(ext) !== -1) {
+            memo.type = type;
           }
         }
-      }
 
-      $scope.memos = memos;
+        $scope.memos.push(memo);
+      }
     }
 
     $http.get($scope.dir).success(readMemos);
