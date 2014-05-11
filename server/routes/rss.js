@@ -3,10 +3,12 @@
 var express = require('express');
 var rss = express.Router();
 
+var memoConfig = require('../config').memoConfig;
 var rssConfig = require('../config').rssConfig;
 
 var Rss = require('rss');
 var fs = require('fs');
+var path = require('path');
 
 var MEMO_DIR = './memos/';
 var MEMO_URL = '#/' + MEMO_DIR;
@@ -25,7 +27,8 @@ rss.get('/memo.rdf', function(req, res) {
 
   var feed = new Rss(rssConfig);
 
-  fs.readdir(RSS_DIR, function (err, files) {
+  var rssDir = path.join(__dirname, '../..', memoConfig.dir, rssConfig.dir);
+  fs.readdir(rssDir, function (err, files) {
     files.sort(function (a, b) {
       return a > b ? -1 : 1;
     });

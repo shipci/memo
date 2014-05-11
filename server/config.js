@@ -5,6 +5,7 @@ exports.memoConfig = {
 };
 
 exports.rssConfig = {
+  dir: '.rss',
   title: 'memo blog',
   description: 'memo blog',
   author: 'Ikuo Terado',
