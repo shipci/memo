@@ -1,15 +1,15 @@
 'use strict';
 
-var express = require('express');
-var rss = express.Router();
+var rss = require('express').Router();
 
 var Rss = require('rss');
 var fs = require('fs');
 var path = require('path');
 var marked = require('marked');
 
-var memoConfig = require('../config').memoConfig;
-var rssConfig = require('../config').rssConfig;
+var config = require('../config');
+var memoConfig = config.memoConfig;
+var rssConfig = config.rssConfig;
 
 var memoDir = path.join(__dirname, '../..', memoConfig.dir);
 var rssDir = path.join(memoDir, rssConfig.dir);
