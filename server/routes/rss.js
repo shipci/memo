@@ -67,15 +67,11 @@ rss.get('/memo.rdf', function(req, res) {
 });
 
 rss.post('/*', function(req, res) {
-  var path = MEMO_DIR_FROM_RSS + req.params[0];
   var title = req.query.t;
-  // console.log(path);
-  // console.log(title);
+  var src = path.join(rssDir, getDataString() + '_' + title);
+  var dst = path.join('../..', memoConfig.dir, req.params[0]);
 
-  var link = RSS_DIR + getDataString() + '_' + title;
-  // console.log(link);
-
-  fs.symlink(path, link, function (err) {
+  fs.symlink(dst, src, function (err) {
     if (err) {
       throw err;
     }
