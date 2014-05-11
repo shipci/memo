@@ -29,16 +29,12 @@ rss.get('/memo.rdf', function(req, res) {
     files.sort(function (a, b) {
       return a > b ? -1 : 1;
     });
-    // console.log(files);
 
     for (var i = 0, l = files.length; i < l; i++) {
       var file = files[i];
-      // console.log(file);
-
       if (file.match(/(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})_(.*)/)) {
         var date = new Date();
         date.setTime(Date.UTC(RegExp.$1, RegExp.$2 - 1, RegExp.$3, RegExp.$4, RegExp.$5, RegExp.$6));
-        // console.log(date);
 
         var title = RegExp.$7 || '(No title)';
         var memo = path.join(rssDir, fs.readlinkSync(path.join(rssDir, file)));
@@ -58,7 +54,6 @@ rss.get('/memo.rdf', function(req, res) {
         }
       }
     }
-    // console.log(feed);
 
     res.set('Content-Type', 'application/xml');
     // res.type('rss');
