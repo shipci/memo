@@ -81,8 +81,8 @@ rss.post('/*', function(req, res) {
 });
 
 function getDataString() {
-  function getValue(funcName) {
-    var value = date['getUTC' + funcName]();
+  function getValue(d, funcName) {
+    var value = d['getUTC' + funcName]();
     if (funcName === 'Month') {
       value++;
     }
@@ -93,13 +93,13 @@ function getDataString() {
   }
 
   var date = new Date();
-
   var funcNames = ['FullYear', 'Month', 'Date', 'Hours', 'Minutes', 'Seconds'];
   var dateString = '';
-  for (var i = 0; i < funcNames.length; i++) {
-    dateString += getValue(funcNames[i]);
+  for (var i = 0, l = funcNames.length; i < l; i++) {
+    dateString += getValue(date, funcNames[i]);
   }
   return dateString;
 }
+
 
 module.exports.rss = rss;
