@@ -3,19 +3,17 @@
 var express = require('express');
 var rss = express.Router();
 
-var memoConfig = require('../config').memoConfig;
-var rssConfig = require('../config').rssConfig;
-
 var Rss = require('rss');
 var fs = require('fs');
 var path = require('path');
-
-var MEMO_DIR = './memos/';
-var MEMO_URL = '#/' + MEMO_DIR;
-var MEMO_DIR_FROM_RSS = '../.' + MEMO_DIR;
-var RSS_DIR = MEMO_DIR + '.rss/';
-
 var marked = require('marked');
+
+var memoConfig = require('../config').memoConfig;
+var rssConfig = require('../config').rssConfig;
+
+var memoDir = path.join(__dirname, '../..', memoConfig.dir);
+var rssDir = path.join(memoDir, rssConfig.dir);
+
 
 rss.get('/memo.rdf', function(req, res) {
   var url =  'http://' + req.headers.host + '/';
@@ -27,14 +25,13 @@ rss.get('/memo.rdf', function(req, res) {
 
   var feed = new Rss(rssConfig);
 
-  var rssDir = path.join(__dirname, '../..', memoConfig.dir, rssConfig.dir);
   fs.readdir(rssDir, function (err, files) {
     files.sort(function (a, b) {
       return a > b ? -1 : 1;
     });
     // console.log(files);
 
-    for (var i = 0; i < files.length; i++) {
+    for (var i = 0, l = files.length; i < l; i++) {
       var file = files[i];
       // console.log(file);
 
@@ -44,13 +41,9 @@ rss.get('/memo.rdf', function(req, res) {
         // console.log(date);
 
         var title = RegExp.$7 || '(No title)';
-
-        var link = fs.readlinkSync(RSS_DIR + file).replace(MEMO_DIR_FROM_RSS, '');
-        var url =  'http://' + req.headers.host + '/' + MEMO_URL + link;
-        // var url = req.headers.referer + MEMO_URL + link.replace(MEMO_DIR_FROM_RSS, '');
-        // console.log('"' + url + '"');
-
-        var description = marked(fs.readFileSync(MEMO_DIR + link).toString());
+        var memo = path.join(rssDir, fs.readlinkSync(path.join(rssDir, file)));
+        var url =  'http://' + req.headers.host + '/#/memos' + memo.replace(memoDir, '');
+        var description = marked(fs.readFileSync(memo).toString());
 
         feed.item({
           title: title,
