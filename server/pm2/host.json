@@ -3,6 +3,6 @@
   "script"    : "./server/bin/www",
   "env": {
     "NODE_ENV": "production",
-    "WATCH": "false"
+    "WATCH": "true"
   }
 }]
