@@ -65,5 +65,15 @@ angular.module('memoApp')
 
       $('.modal').modal('hide');
     };
-  });
 
+    $scope.selectContent = function () {
+      var element = document.getElementById('content');
+
+      var range = document.createRange();
+      range.selectNodeContents(element);
+
+      var selection = window.getSelection();
+      selection.removeAllRanges();
+      selection.addRange(range);
+    };
+  });
