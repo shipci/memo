@@ -21,7 +21,7 @@ app.set('view engine', 'jade');
 app.use(favicon());
 
 // Log
-log4js.configure(path.join(__dirname, 'log4js_setting.json'));
+log4js.configure(path.join(__dirname, 'log4js_setting.json'), {reloadSecs: 3600});
 var loggerRequest = log4js.getLogger('request');
 app.use(log4js.connectLogger(loggerRequest, { level: log4js.levels.INFO }));
 
